@@ -1,0 +1,62 @@
+{
+  "ascii": [
+    
+"████████╗░█████╗░███╗░░██╗░█████╗░██╗░░░██╗  ██╗░░░██╗██████╗░██████╗░███████╗████████╗██╗",
+"╚══██╔══╝██╔══██╗████╗░██║██╔══██╗╚██╗░██╔╝  ██║░░░██║██╔══██╗██╔══██╗██╔════╝╚══██╔══╝██║",
+"░░░██║░░░███████║██╔██╗██║███████║░╚████╔╝░  ██║░░░██║██████╔╝██████╔╝█████╗░░░░░██║░░░██║",
+"░░░██║░░░██╔══██║██║╚████║██╔══██║░░╚██╔╝░░  ██║░░░██║██╔═══╝░██╔══██╗██╔══╝░░░░░██║░░░██║",
+"░░░██║░░░██║░░██║██║░╚███║██║░░██║░░░██║░░░  ╚██████╔╝██║░░░░░██║░░██║███████╗░░░██║░░░██║",
+"░░░╚═╝░░░╚═╝░░╚═╝╚═╝░░╚══╝╚═╝░░╚═╝░░░╚═╝░░░  ░╚═════╝░╚═╝░░░░░╚═╝░░╚═╝╚══════╝░░░╚═╝░░░╚═╝"
+  ],
+  "title": "Portfolio - Tanay Upreti",
+  "username": "guest",
+  "hostname": "tanayupreti.dev",
+  "password": "GeneralKenobi",
+  "repoLink": "https://github.com/code-wolf-byte/tanayupreti.github.io",
+  "social": {
+    "email": "contact@tanayupreti.dev",
+    "github": "code-wolf-byte",
+    "linkedin": "tanay-upreti"
+  },
+  "aboutGreeting": "Hello there, I'm Tanay Upreti. I'm a student at Arizona State University, pursuing a degree in Computer Science. <br><br> When I'm not buried in code or tinkering with the latest tech, you can find me exploring new ways to merge innovation with everyday life.I thrive on challenges and love pushing the boundaries of what's possible. <br><br>My journey in the tech world has been anything but conventional – from developing secure applications for top social platforms to creating custom solutions for diverse clients. Every project I tackle is a new adventure, a chance to learn something new and make a real impact. <br><br> If you have a fun project to work upon or just want to say hi, feel free to reach out to me. I'm always up for a good chat!",
+  "projects": [
+    [
+      "Discord-LMS",
+      "Leatning Management System built within the Discord ecosystem.",
+      "https://github.com/code-wolf-byte/Discord-LMS"
+    ],
+    [
+      "Email-Bot",
+      "Fun project to use Discord as an email client.",
+      "https://github.com/code-wolf-byte/Email-Bot"
+    ],
+    [
+      "web-server",
+      "A blatent rip-off of (not really working) Nginx built in Rust.",
+      "https://github.com/code-wolf-byte/reverse-proxy-server/"
+    ]
+  ],
+  "colors": {
+    "background": "#0C0623",
+    "foreground": "#F8DDE5",
+    "banner": "#FF9951",
+    "border": {
+      "visible": true,
+      "color": "#FFADE2"
+    },
+    "prompt": {
+      "default": "#A5A7A7",
+      "user": "#FE6BC9",
+      "host": "#70FDFF",
+      "input": "#FF7685"
+    },
+    "link": {
+      "text": "#B6AAEE",
+      "highlightColor": "#FFADE2",
+      "highlightText": "#0C0623"
+    },
+    "commands": {
+      "textColor": "#FD9BDB"
+    }
+  }
+}
