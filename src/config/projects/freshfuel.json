@@ -1,0 +1,11 @@
+{
+  "name": "FreshFuel",
+  "description": "Backend service for a cloud-based nutrition tracking application",
+  "github_url": "https://github.com/code-wolf-byte/freshfuel",
+  "is_pinned": true,
+  "tech_stack": ["Go", "Backend"],
+  "tech_color": {
+    "Backend": "#3572A5",
+    "Go": "#00ADD8"
+  }
+} 

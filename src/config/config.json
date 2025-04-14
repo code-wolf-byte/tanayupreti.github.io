@@ -1,0 +1,48 @@
+{
+  "projects": {
+    "freshfuel": {
+      "name": "FreshFuel",
+      "description": "Backend service for a cloud-based nutrition tracking application",
+      "github_url": "https://github.com/code-wolf-byte/freshfuel",
+      "is_pinned": true,
+      "tech_stack": ["Go", "Backend"],
+      "tech_color": {
+        "Backend": "#3572A5",
+        "Go": "#00ADD8"
+      }
+    },
+    "adaptive-learning": {
+      "name": "Adaptive Learning System",
+      "description": "Platform for personalized education using adaptive learning algorithms",
+      "github_url": "https://github.com/code-wolf-byte/adaptive-learning",
+      "is_pinned": true,
+      "tech_stack": ["Python", "Education"],
+      "tech_color": {
+        "Python": "#3572A5",
+        "Education": "#f1e05a"
+      }
+    },
+    "api-toolkit": {
+      "name": "API Integration Toolkit",
+      "description": "Library for seamless integration with various third-party APIs",
+      "github_url": "https://github.com/code-wolf-byte/api-toolkit",
+      "is_pinned": true,
+      "tech_stack": ["C++", "Backend"],
+      "tech_color": {
+        "Backend": "#f34b7d",
+        "C++": "#f34b7d"
+      }
+    },
+    "data-dashboard": {
+      "name": "Data Analytics Dashboard",
+      "description": "Dashboard for visualizing and analyzing data from multiple sources",
+      "github_url": "https://github.com/code-wolf-byte/data-dashboard",
+      "is_pinned": true,
+      "tech_stack": ["Python", "Data"],
+      "tech_color": {
+        "Python": "#3572A5",
+        "Data": "#3572A5"
+      }
+    }
+  }
+} 

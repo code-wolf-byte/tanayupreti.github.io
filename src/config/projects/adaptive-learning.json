@@ -1,0 +1,11 @@
+{
+  "name": "Adaptive Learning System",
+  "description": "Platform for personalized education using adaptive learning algorithms",
+  "github_url": "https://github.com/code-wolf-byte/adaptive-learning",
+  "is_pinned": true,
+  "tech_stack": ["Python", "Education"],
+  "tech_color": {
+    "Python": "#3572A5",
+    "Education": "#f1e05a"
+  }
+} 

@@ -1,0 +1,11 @@
+{
+  "name": "Data Analytics Dashboard",
+  "description": "Dashboard for visualizing and analyzing data from multiple sources",
+  "github_url": "https://github.com/code-wolf-byte/data-dashboard",
+  "is_pinned": true,
+  "tech_stack": ["Python", "Data"],
+  "tech_color": {
+    "Python": "#3572A5",
+    "Data": "#3572A5"
+  }
+} 

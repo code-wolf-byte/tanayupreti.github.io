@@ -1,0 +1,11 @@
+{
+  "name": "API Integration Toolkit",
+  "description": "Library for seamless integration with various third-party APIs",
+  "github_url": "https://github.com/code-wolf-byte/api-toolkit",
+  "is_pinned": true,
+  "tech_stack": ["C++", "Backend"],
+  "tech_color": {
+    "Backend": "#f34b7d",
+    "C++": "#f34b7d"
+  }
+} 
