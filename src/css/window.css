@@ -1,0 +1,154 @@
+/* Window container */
+.window {
+  position: absolute;
+  top: 0;
+  left: 0;
+  box-sizing: border-box;
+  border: 2px solid var(--border);
+  border-radius: 2px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--bg);
+  min-width: 240px;
+  min-height: 120px;
+  transition: box-shadow 0.15s ease;
+}
+
+.window.focused {
+  box-shadow: 0 0 28px rgba(255, 173, 226, 0.45);
+}
+
+.window.minimized {
+  display: none;
+}
+
+.window.maximized {
+  transform: none !important;
+  width: 100% !important;
+  height: 100% !important;
+  border-radius: 0;
+}
+
+/* Title bar */
+.window-titlebar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 36px;
+  padding: 0 10px;
+  background: var(--border);
+  color: var(--bg);
+  font-family: 'Pixelify Sans', sans-serif;
+  font-size: 20px;
+  cursor: move;
+  user-select: none;
+  flex-shrink: 0;
+}
+
+.window-title {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.window-controls {
+  display: flex;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.window-btn {
+  background: var(--bg);
+  color: var(--border);
+  border: 1px solid transparent;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: monospace;
+  line-height: 1;
+  border-radius: 1px;
+  padding: 0;
+}
+
+.window-btn:hover {
+  background: rgba(255, 173, 226, 0.2);
+  color: var(--border);
+}
+
+.window-btn.window-close:hover {
+  background: #cc2222;
+  color: white;
+}
+
+/* Decorative bars below titlebar */
+.window-deco-bar {
+  background: var(--border);
+  flex-shrink: 0;
+}
+
+/* Content area */
+.window-content {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  box-sizing: border-box;
+  padding: 0;
+}
+
+.window-content::-webkit-scrollbar {
+  display: none;
+}
+
+/* Resize handles */
+.resize-handle {
+  position: absolute;
+  z-index: 10;
+}
+
+.resize-handle.n {
+  top: 0;
+  left: 6px;
+  right: 6px;
+  height: 4px;
+  cursor: n-resize;
+}
+
+.resize-handle.s {
+  bottom: 0;
+  left: 6px;
+  right: 6px;
+  height: 4px;
+  cursor: s-resize;
+}
+
+.resize-handle.e {
+  right: 0;
+  top: 6px;
+  bottom: 6px;
+  width: 4px;
+  cursor: e-resize;
+}
+
+.resize-handle.w {
+  left: 0;
+  top: 6px;
+  bottom: 6px;
+  width: 4px;
+  cursor: w-resize;
+}
+
+.resize-handle.se {
+  right: 0;
+  bottom: 0;
+  width: 12px;
+  height: 12px;
+  cursor: se-resize;
+}

@@ -1,0 +1,78 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+#desktop {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+}
+
+#desktop-area {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+}
+
+#taskbar {
+  height: 40px;
+  background: var(--bg);
+  border-top: 2px solid var(--border);
+  display: flex;
+  align-items: center;
+  padding: 0 8px;
+  gap: 8px;
+  flex-shrink: 0;
+  user-select: none;
+}
+
+#taskbar-windows {
+  flex: 1;
+  display: flex;
+  gap: 4px;
+  overflow: hidden;
+}
+
+.taskbar-btn {
+  background: transparent;
+  color: var(--text);
+  border: 1px solid var(--border);
+  padding: 4px 12px;
+  cursor: pointer;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 13px;
+  font-weight: 200;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 160px;
+}
+
+.taskbar-btn:hover {
+  background: var(--border);
+  color: var(--bg);
+}
+
+.taskbar-btn.active {
+  background: var(--border);
+  color: var(--bg);
+}
+
+.taskbar-btn.minimized {
+  opacity: 0.55;
+}
+
+#taskbar-clock {
+  color: var(--prompt-default);
+  font-size: 13px;
+  font-family: 'IBM Plex Mono', monospace;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
