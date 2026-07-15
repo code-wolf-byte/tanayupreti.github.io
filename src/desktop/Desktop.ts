@@ -1,6 +1,8 @@
 import { WindowManager } from './WindowManager';
 import { Taskbar } from './Taskbar';
-import { TerminalWindow } from '../windows/TerminalWindow';
+import { VmWindow } from '../windows/VmWindow';
+import { FileBrowserWindow } from '../windows/FileBrowserWindow';
+import { EditorWindow, baseName } from '../windows/EditorWindow';
 
 export class Desktop {
   private readonly root: HTMLElement;
@@ -47,11 +49,24 @@ export class Desktop {
       this.windowManager.toggleMinimize(id);
     };
 
-    // Open default terminal window
-    this.windowManager.open(new TerminalWindow(), {
+    // Open default VM window
+    this.windowManager.open(new VmWindow(), {
       title: './Portfolio',
-      width: 760,
-      height: 480,
+      width: 800,
+      height: 500,
     });
+
+    this.openFileBrowser();
+  }
+
+  openFileBrowser(path?: string): void {
+    const browser = new FileBrowserWindow(path);
+    browser.onOpenFile = (filePath) => this.openEditor(filePath);
+    this.windowManager.open(browser, { title: 'Files', width: 420, height: 420 });
+  }
+
+  openEditor(path: string): void {
+    const editor = new EditorWindow(path);
+    this.windowManager.open(editor, { title: baseName(path), width: 560, height: 420 });
   }
 }

@@ -152,3 +152,170 @@
   height: 12px;
   cursor: se-resize;
 }
+
+/* VM window */
+.vm-status {
+  padding: 16px;
+  font-family: monospace;
+  font-size: 14px;
+  color: var(--border);
+}
+
+.vm-status-error {
+  color: #ff6b6b;
+}
+
+.vm-console {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  background: black;
+  color: #d0d0d0;
+  outline: none;
+}
+
+/* File browser */
+.fb {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 13px;
+}
+
+.fb-path {
+  flex-shrink: 0;
+  padding: 6px 10px;
+  border-bottom: 1px solid var(--border);
+  color: var(--prompt-2);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.fb-list {
+  flex: 1;
+  margin: 0;
+  padding: 4px 0;
+  list-style: none;
+  overflow-y: auto;
+}
+
+.fb-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 3px 10px;
+  cursor: pointer;
+  user-select: none;
+  outline: none;
+}
+
+.fb-row:hover,
+.fb-row:focus {
+  background: var(--border);
+  color: var(--bg);
+}
+
+.fb-icon {
+  width: 1em;
+  flex-shrink: 0;
+  text-align: center;
+}
+
+.fb-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.fb-dir .fb-name {
+  color: var(--prompt-1);
+}
+
+.fb-row:hover .fb-name,
+.fb-row:focus .fb-name {
+  color: var(--bg);
+}
+
+.fb-msg {
+  padding: 6px 10px;
+  color: var(--prompt-default);
+}
+
+.fb-error {
+  color: #ff6b6b;
+  white-space: pre-wrap;
+}
+
+/* Text editor */
+.ed {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 13px;
+}
+
+.ed-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+  padding: 5px 10px;
+  border-bottom: 1px solid var(--border);
+}
+
+.ed-path {
+  flex: 1;
+  color: var(--prompt-2);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ed-save {
+  flex-shrink: 0;
+  font-family: inherit;
+  font-size: 12px;
+  padding: 1px 10px;
+  cursor: pointer;
+  background: var(--border);
+  color: var(--bg);
+  border: 1px solid var(--border);
+}
+
+.ed-save:disabled {
+  background: transparent;
+  color: var(--prompt-default);
+  border-color: var(--prompt-default);
+  cursor: default;
+}
+
+.ed-text {
+  flex: 1;
+  resize: none;
+  border: none;
+  outline: none;
+  padding: 8px 10px;
+  background: var(--bg);
+  color: var(--text);
+  font-family: inherit;
+  font-size: 13px;
+  line-height: 1.5;
+  tab-size: 4;
+}
+
+.ed-status {
+  flex-shrink: 0;
+  padding: 4px 10px;
+  border-top: 1px solid var(--border);
+  color: var(--prompt-default);
+  white-space: pre-wrap;
+}
+
+.ed-error {
+  color: #ff6b6b;
+}
