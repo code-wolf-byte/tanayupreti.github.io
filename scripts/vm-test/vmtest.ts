@@ -1,6 +1,6 @@
 // End-to-end check of src/webvm/vm.ts against the real alpine.ext2.
 // Bundled with esbuild and driven by headless Chrome: ./scripts/vm-test/run.sh
-import { exec, list, readFile, writeFile, quote } from '../../src/webvm/vm';
+import { exec, list, readFile, writeFile, isWritable, quote } from '../../src/webvm/vm';
 import { parentOf, joinPath } from '../../src/windows/FileBrowserWindow';
 import { baseName } from '../../src/windows/EditorWindow';
 
@@ -51,8 +51,19 @@ try {
   const home = await list('/home/user');
   const homeNames = home.map((e) => e.name).sort();
   assert('home_not_empty', home.length > 0, homeNames);
-  assert('home_has_portfolio_files', ['README.txt', 'about.txt', 'contact.txt', 'projects'].every((n) => homeNames.includes(n)), homeNames);
+  assert('home_has_portfolio_files', ['README.txt', 'about.txt', 'contact.txt', 'projects', 'scratch'].every((n) => homeNames.includes(n)), homeNames);
   assert('home_projects_is_dir', home.some((e) => e.name === 'projects' && e.isDir), home);
+  assert('home_scratch_is_dir', home.some((e) => e.name === 'scratch' && e.isDir), home);
+
+  // list() reports writability per entry — the file browser's lock glyph rides
+  // on this, so it must match the permissions the image bakes in.
+  const readmeEntry = home.find((e) => e.name === 'README.txt');
+  assert('list_readonly_file_not_writable', readmeEntry?.writable === false, readmeEntry);
+  const scratchDir = await list('/home/user/scratch');
+  const notesEntry = scratchDir.find((e) => e.name === 'notes.txt');
+  assert('list_scratch_file_writable', notesEntry?.writable === true, notesEntry);
+  // Names with the type/writable prefix stripped cleanly (no leading marker).
+  assert('list_names_clean', home.every((e) => !/^[dfrw] /.test(e.name)), homeNames);
 
   const projects = await list('/home/user/projects');
   assert('projects_populated', projects.length >= 3 && projects.every((e) => e.name.endsWith('.txt')), projects.map((e) => e.name));
@@ -61,8 +72,31 @@ try {
   assert('readme_readable', (await readFile('/home/user/README.txt')).includes('Portfolio'), (await readFile('/home/user/README.txt')).slice(0, 40));
   assert('about_has_no_html', !(await readFile('/home/user/about.txt')).includes('<br'), (await readFile('/home/user/about.txt')).slice(0, 60));
 
-  // Home files must be user-writable, or the editor can't save them.
-  assert('home_files_writable_by_user', (await exec('test -w /home/user/README.txt && echo yes')).trim() === 'yes');
+  // Permissions: portfolio content read-only, scratch/ the one writable spot.
+  const RO = '/home/user/README.txt';
+  const RW = '/home/user/scratch/notes.txt';
+
+  assert('readonly_not_writable', (await isWritable(RO)) === false);
+  assert('scratch_is_writable', (await isWritable(RW)) === true);
+
+  let roThrew = '';
+  try {
+    await writeFile(RO, 'should not land');
+  } catch (e) {
+    roThrew = String((e as Error).message);
+  }
+  assert('readonly_file_rejects_write', /denied|read-only/i.test(roThrew), roThrew);
+  assert('readonly_content_intact', (await readFile(RO)).includes('Portfolio'), (await readFile(RO)).slice(0, 30));
+
+  // Root-owned, so uid 1000 can't just chmod the guardrail away.
+  assert('readonly_cannot_chmod', (await exec(`chmod +w ${quote(RO)} 2>&1 || echo blocked`)).includes('blocked'));
+  assert('readonly_still_not_writable_after_chmod', (await isWritable(RO)) === false);
+
+  // A read-only directory must reject new files too.
+  assert('projects_dir_readonly', (await exec('touch /home/user/projects/new.txt 2>&1 || echo blocked')).includes('blocked'));
+
+  // The shell's cwd stays usable, or the terminal feels broken.
+  assert('home_dir_still_writable', (await exec('touch /home/user/.probe && echo ok && rm -f /home/user/.probe')).trim() === 'ok');
 
   // writeFile round-trip, including a path that needs shell quoting.
   await writeFile('/tmp/hello.txt', 'written from JS\n');
@@ -74,16 +108,15 @@ try {
   assert('baseName_file', baseName('/home/user/README.txt') === 'README.txt', baseName('/home/user/README.txt'));
   assert('baseName_root', baseName('/') === '/', baseName('/'));
 
-  // The editor's real job: open a portfolio file, edit it, save, reopen.
+  // The editor's real job: open the writable file, edit, save, reopen.
   // Saving twice is what broke DataDevice before, so do it twice.
-  const target = '/home/user/README.txt';
-  const original = await readFile(target);
-  await writeFile(target, original + '\nedited once\n');
-  assert('editor_save_once', (await readFile(target)).endsWith('edited once\n'));
-  await writeFile(target, original + '\nedited twice\n');
-  assert('editor_save_twice', (await readFile(target)).endsWith('edited twice\n'));
-  await writeFile(target, original);
-  assert('editor_restore', (await readFile(target)) === original);
+  const original = await readFile(RW);
+  await writeFile(RW, original + '\nedited once\n');
+  assert('editor_save_once', (await readFile(RW)).endsWith('edited once\n'));
+  await writeFile(RW, original + '\nedited twice\n');
+  assert('editor_save_twice', (await readFile(RW)).endsWith('edited twice\n'));
+  await writeFile(RW, original);
+  assert('editor_restore', (await readFile(RW)) === original);
 
   // Non-zero exit must reject, and must carry stderr (which is redirected too).
   let threw = '';

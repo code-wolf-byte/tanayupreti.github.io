@@ -11,8 +11,19 @@ RUN apk add --no-cache bash coreutils less nano figlet \
 COPY rootfs-overlay/ /
 RUN chmod +x /usr/local/bin/banner /usr/local/bin/about /usr/local/bin/projects \
       /usr/local/bin/repo /usr/local/bin/whoami /usr/local/bin/help \
+    # bash's `help` builtin shadows /usr/local/bin/help, so the banner's
+    # "Type 'help'" would print bash's builtin index instead of the site's.
+    && echo "enable -n help" >> /etc/profile \
     && echo "[ -t 0 ] && banner" >> /etc/profile \
-    # COPY lands the home-directory files as root; the VM runs as uid 1000.
-    && chown -R user:user /home/user
+    # Portfolio content is read-only, scratch/ is the one carve-out. Rule, not a
+    # per-file list, so new content from config.json can't drift out of sync.
+    # Files stay root-owned on purpose: uid 1000 could chmod +w its own files
+    # and undo this. /home/user itself stays user-owned so the shell feels
+    # normal (which does leave `rm -f` possible — this is a guardrail, and
+    # nothing is at risk: every write is local to the visitor's own browser).
+    && chown -R root:root /home/user && chmod -R a-w /home/user \
+    && chown user:user /home/user && chmod 755 /home/user \
+    && chown -R user:user /home/user/scratch && chmod 755 /home/user/scratch \
+    && chmod 644 /home/user/scratch/*
 
 WORKDIR /home/user

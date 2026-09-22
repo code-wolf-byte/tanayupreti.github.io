@@ -5,6 +5,7 @@ export class AppWindow {
   readonly id: WindowId;
   readonly element: HTMLElement;
   private readonly titlebarEl: HTMLElement;
+  private readonly titleEl: HTMLElement;
   private readonly contentEl: HTMLElement;
   private readonly desktopArea: HTMLElement;
   private content: WindowContent | null = null;
@@ -57,6 +58,7 @@ export class AppWindow {
     `;
 
     this.titlebarEl = this.element.querySelector('.window-titlebar') as HTMLElement;
+    this.titleEl = this.element.querySelector('.window-title') as HTMLElement;
     this.contentEl = this.element.querySelector('.window-content') as HTMLElement;
 
     this.bindControls();
@@ -156,6 +158,11 @@ export class AppWindow {
   mount(content: WindowContent): void {
     this.content = content;
     content.mount(this.contentEl);
+  }
+
+  setTitle(title: string): void {
+    // textContent, not innerHTML: title can derive from a guest filename.
+    this.titleEl.textContent = title;
   }
 
   focus(): void {

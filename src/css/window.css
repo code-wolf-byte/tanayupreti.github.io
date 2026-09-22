@@ -225,6 +225,7 @@
 }
 
 .fb-name {
+  flex: 1;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -232,6 +233,16 @@
 
 .fb-dir .fb-name {
   color: var(--prompt-1);
+}
+
+.fb-readonly .fb-name {
+  color: var(--prompt-default);
+}
+
+.fb-lock {
+  flex-shrink: 0;
+  font-size: 11px;
+  opacity: 0.8;
 }
 
 .fb-row:hover .fb-name,
@@ -318,4 +329,37 @@
 
 .ed-error {
   color: #ff6b6b;
+}
+
+/* Mobile: the desktop metaphor (overlapping, draggable, tiled windows) doesn't
+   fit a phone. Below 700px each window fills the screen and only the focused
+   one shows; you switch apps from the taskbar + Apps menu. */
+@media (max-width: 700px) {
+  .window {
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    min-width: 0;
+    transform: none !important;
+    border-width: 0 0 2px 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  /* One app at a time. Switch by focusing another (tap its taskbar button). */
+  .window:not(.focused) {
+    display: none;
+  }
+
+  /* Full-screen already; drag/minimize/maximize are meaningless here. */
+  .window-minimize,
+  .window-maximize,
+  .resize-handle {
+    display: none;
+  }
+
+  /* Bigger touch target for the one control that remains. */
+  .window-btn {
+    padding: 6px 12px;
+  }
 }

@@ -22,6 +22,7 @@ body {
 }
 
 #taskbar {
+  position: relative;
   height: 40px;
   background: var(--bg);
   border-top: 2px solid var(--border);
@@ -31,6 +32,59 @@ body {
   gap: 8px;
   flex-shrink: 0;
   user-select: none;
+}
+
+#taskbar-apps {
+  flex-shrink: 0;
+  background: transparent;
+  color: var(--border);
+  border: 1px solid var(--border);
+  padding: 4px 12px;
+  cursor: pointer;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 13px;
+  font-weight: 400;
+  white-space: nowrap;
+}
+
+#taskbar-apps:hover,
+#taskbar-apps.active {
+  background: var(--border);
+  color: var(--bg);
+}
+
+#taskbar-menu {
+  position: absolute;
+  bottom: calc(100% + 4px);
+  left: 8px;
+  min-width: 160px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  z-index: 10000;
+}
+
+/* display:flex above would override the `hidden` attribute; restore it. */
+#taskbar-menu[hidden] {
+  display: none;
+}
+
+.taskbar-menu-item {
+  background: transparent;
+  color: var(--text);
+  border: none;
+  text-align: left;
+  padding: 8px 14px;
+  cursor: pointer;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 13px;
+  font-weight: 200;
+}
+
+.taskbar-menu-item:hover {
+  background: var(--border);
+  color: var(--bg);
 }
 
 #taskbar-windows {
