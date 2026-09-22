@@ -31,3 +31,4 @@ scripts/vm-test/vmtest.js
 *.njsproj
 *.sln
 *.sw?
+shots/

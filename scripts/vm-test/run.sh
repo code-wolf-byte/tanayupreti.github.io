@@ -51,7 +51,7 @@ sleep 1
   "http://localhost:$PORT/vmtest.html" >/dev/null 2>&1 &
 CHROME_PID=$!
 
-for _ in $(seq 1 60); do
+for _ in $(seq 1 200); do
   [ -s "$RESULT" ] && break
   sleep 2
 done

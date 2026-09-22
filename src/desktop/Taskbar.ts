@@ -20,7 +20,7 @@ export class Taskbar {
     this.element = document.createElement('div');
     this.element.id = 'taskbar';
     this.element.innerHTML = `
-      <button id="taskbar-apps" title="Launch an app">▤ Apps</button>
+      <button id="taskbar-apps" title="Launch an app">▮ Apps</button>
       <div id="taskbar-menu" hidden></div>
       <div id="taskbar-windows"></div>
       <span id="taskbar-clock"></span>

@@ -2,11 +2,13 @@ import { Terminal } from '@xterm/xterm';
 import { FitAddon } from '@xterm/addon-fit';
 import '@xterm/xterm/css/xterm.css';
 import { vm } from './vm';
+import { BootSequence } from './BootSequence';
 import type { WindowContent } from '../types';
 
 export class WebVmTerminal implements WindowContent {
-  private statusEl!: HTMLElement;
+  private screenEl!: HTMLElement;
   private termEl!: HTMLElement;
+  private boot0!: BootSequence;
   private term!: Terminal;
   private fitAddon!: FitAddon;
   private resizeObserver!: ResizeObserver;
@@ -15,13 +17,32 @@ export class WebVmTerminal implements WindowContent {
 
   mount(container: HTMLElement): void {
     container.innerHTML = `
-      <div class="vm-status">Booting Linux (Alpine, x86)&hellip;</div>
-      <div class="vm-console"></div>
+      <div class="vm">
+        <div class="vm-screen"><div class="vm-console"></div></div>
+        <div class="vm-banner">
+          <b>Not a simulation.</b> A real x86 Alpine Linux kernel, compiled to
+          WebAssembly and booted in this tab. Your edits live in your browser only.
+        </div>
+      </div>
     `;
-    this.statusEl = container.querySelector('.vm-status')!;
+    this.screenEl = container.querySelector('.vm-screen')!;
     this.termEl = container.querySelector('.vm-console')!;
 
-    this.term = new Terminal({ cursorBlink: true, fontFamily: 'monospace', fontSize: 14 });
+    // Mounted before the terminal so the POST is on screen from the first frame.
+    this.boot0 = new BootSequence();
+    this.screenEl.appendChild(this.boot0.element);
+
+    // NOT the site's IBM Plex Mono: Plex has no box-drawing or block glyphs, so
+    // every `█ ╗ ═ ║` in the boot banner falls back to another font at a
+    // different advance width (measured: 9.6px vs 10px for `M`) and the art
+    // shears apart. These stacks all cover U+2500-259F at a uniform width.
+    this.term = new Terminal({
+      cursorBlink: true,
+      fontFamily: "'DejaVu Sans Mono', 'Liberation Mono', Menlo, Consolas, monospace",
+      fontSize: 14,
+      lineHeight: 1.2,
+      theme: TERM_THEME,
+    });
     this.fitAddon = new FitAddon();
     this.term.loadAddon(this.fitAddon);
     this.term.open(this.termEl);
@@ -42,12 +63,12 @@ export class WebVmTerminal implements WindowContent {
 
     this.boot().catch((err) => {
       console.error('WebVM failed to boot', err);
-      this.statusEl.textContent = 'Failed to start the VM — see browser console for details.';
-      this.statusEl.classList.add('vm-status-error');
+      this.boot0.fail('Failed to start the VM — see the browser console for details.');
     });
   }
 
   destroy(): void {
+    this.boot0.destroy();
     this.resizeObserver.disconnect();
     this.term.dispose();
     // CheerpX has no documented teardown API — the VM's WASM/worker instance
@@ -95,7 +116,8 @@ export class WebVmTerminal implements WindowContent {
   private async boot(): Promise<void> {
     const { cx } = await vm();
 
-    this.statusEl.remove();
+    this.boot0.startingShell();
+    await this.boot0.finish();
 
     // Fit once more right before registering: this is the guest's only chance
     // to learn its size. A window still hidden here keeps xterm's 80x24
@@ -123,3 +145,33 @@ export class WebVmTerminal implements WindowContent {
     });
   }
 }
+
+/**
+ * ANSI palette for the guest. Kept in sync by hand with the custom properties
+ * in `css/style.css` — xterm renders to a canvas, so it can't read var().
+ * Dir listings come out blue and bold by default, hence a blue light enough to
+ * stay readable on the near-black background.
+ */
+const TERM_THEME = {
+  background: '#0B0A0F',
+  foreground: '#E6E3EC',
+  cursor: '#FF6BC9',
+  cursorAccent: '#0B0A0F',
+  selectionBackground: 'rgba(255, 107, 201, 0.30)',
+  black: '#14131A',
+  brightBlack: '#8B8796',
+  red: '#FF5C5C',
+  brightRed: '#FF8A8A',
+  green: '#7CE3A4',
+  brightGreen: '#A6F0C2',
+  yellow: '#FF9951',
+  brightYellow: '#FFB77D',
+  blue: '#7FA8FF',
+  brightBlue: '#A5C2FF',
+  magenta: '#FF6BC9',
+  brightMagenta: '#FF9BDB',
+  cyan: '#70FDFF',
+  brightCyan: '#A3FEFF',
+  white: '#E6E3EC',
+  brightWhite: '#FFFFFF',
+};

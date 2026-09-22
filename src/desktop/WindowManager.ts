@@ -120,9 +120,9 @@ export class WindowManager {
     }
   }
 
-  setTitle(id: WindowId, title: string): void {
+  setTitle(id: WindowId, title: string, dirty = false): void {
     // Titlebar only; the taskbar button keeps the base name, which is fine.
-    this.windows.get(id)?.instance.setTitle(title);
+    this.windows.get(id)?.instance.setTitle(title, dirty);
   }
 
   hasWindow(id: WindowId): boolean {

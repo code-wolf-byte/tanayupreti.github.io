@@ -160,9 +160,10 @@ export class AppWindow {
     content.mount(this.contentEl);
   }
 
-  setTitle(title: string): void {
+  setTitle(title: string, dirty = false): void {
     // textContent, not innerHTML: title can derive from a guest filename.
     this.titleEl.textContent = title;
+    this.titleEl.classList.toggle('dirty', dirty);
   }
 
   focus(): void {

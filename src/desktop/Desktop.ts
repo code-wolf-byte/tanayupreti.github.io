@@ -3,6 +3,7 @@ import { Taskbar } from './Taskbar';
 import { VmWindow } from '../windows/VmWindow';
 import { FileBrowserWindow } from '../windows/FileBrowserWindow';
 import { EditorWindow, baseName } from '../windows/EditorWindow';
+import { ProjectsWindow } from '../windows/ProjectsWindow';
 
 export class Desktop {
   private readonly root: HTMLElement;
@@ -23,6 +24,7 @@ export class Desktop {
     this.taskbar = new Taskbar([
       { label: 'Terminal', run: () => this.openTerminal() },
       { label: 'Files', run: () => this.openFileBrowser() },
+      { label: 'Projects', run: () => this.openProjects() },
     ]);
 
     // Append to root
@@ -84,9 +86,18 @@ export class Desktop {
 
   openTerminal(pos?: WindowPos): void {
     this.windowManager.open(new VmWindow(), {
-      title: './Portfolio',
+      title: 'Terminal',
       width: TERM_WIDTH,
       height: 500,
+      ...pos,
+    });
+  }
+
+  openProjects(pos?: WindowPos): void {
+    this.windowManager.open(new ProjectsWindow(), {
+      title: 'Projects',
+      width: 660,
+      height: 420,
       ...pos,
     });
   }
@@ -101,8 +112,10 @@ export class Desktop {
     const editor = new EditorWindow(path);
     const name = baseName(path);
     const id = this.windowManager.open(editor, { title: name, width: 560, height: 420 });
-    // "• name" while unsaved — the dot is the standard dirty marker.
-    editor.onDirtyChange = (dirty) => this.windowManager.setTitle(id, dirty ? `• ${name}` : name);
+    // "• name" while unsaved — the dot is the standard dirty marker, and the
+    // flag tints the whole title so the state reads without hunting for a dot.
+    editor.onDirtyChange = (dirty) =>
+      this.windowManager.setTitle(id, dirty ? `• ${name}` : name, dirty);
   }
 }
 

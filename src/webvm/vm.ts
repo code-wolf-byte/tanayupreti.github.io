@@ -13,7 +13,7 @@ const DISK_IMAGE_URL = '/webvm/alpine.ext2';
 // alpine.ext2 shifts the blocks underneath it, so bump this suffix whenever the
 // image is rebuilt — otherwise returning visitors keep a stale overlay over a
 // new base and see the old filesystem (or a corrupted mix).
-const OVERLAY_STORE_NAME = 'webvm-alpine-overlay-6';
+const OVERLAY_STORE_NAME = 'webvm-alpine-overlay-7';
 const RPC_STORE_NAME = 'webvm-rpc';
 
 // Paths as the guest sees them; the device-relative twin is the same minus the mount point.
@@ -34,6 +34,38 @@ export function vm(): Promise<Vm> {
   return vmPromise;
 }
 
+export interface VmStage {
+  /** 1-based, against TOTAL_STAGES. */
+  step: number;
+  label: string;
+  note: string;
+}
+
+/** Stages reported by boot() below. Keep in step with the report() calls. */
+export const TOTAL_STAGES = 5;
+
+type StageListener = (stage: VmStage) => void;
+const stageListeners = new Set<StageListener>();
+const stageHistory: VmStage[] = [];
+
+/**
+ * Subscribe to boot progress. Stages already passed are replayed immediately,
+ * so a window that opens mid-boot still draws the whole sequence — the file
+ * browser and the terminal both trigger vm() and either may get there first.
+ */
+export function onVmStage(fn: StageListener): () => void {
+  stageHistory.forEach(fn);
+  stageListeners.add(fn);
+  return () => stageListeners.delete(fn);
+}
+
+/** Called as each stage *begins*, so the UI can time it honestly. */
+function report(label: string, note: string): void {
+  const stage: VmStage = { step: stageHistory.length + 1, label, note };
+  stageHistory.push(stage);
+  stageListeners.forEach((fn) => fn(stage));
+}
+
 async function boot(): Promise<Vm> {
   if (!window.crossOriginIsolated) {
     // coi-serviceworker normally reloads us into an isolated context on first
@@ -42,16 +74,23 @@ async function boot(): Promise<Vm> {
     throw new Error('reloading to obtain cross-origin isolation');
   }
 
+  report('cheerpx', 'x86 emulator · webassembly');
   const CheerpX = await loadCheerpX();
 
+  report('block device', 'alpine.ext2 · streamed over https');
   const blockDevice = await CheerpX.HttpBytesDevice.create(DISK_IMAGE_URL);
+
+  report('overlay', 'indexeddb · your writes never leave this browser');
   const overlayDevice = await CheerpX.OverlayDevice.create(
     blockDevice,
     await CheerpX.IDBDevice.create(OVERLAY_STORE_NAME)
   );
+
+  report('devices', 'rpc + data channels');
   const out = await CheerpX.IDBDevice.create(RPC_STORE_NAME);
   const data = await CheerpX.DataDevice.create();
 
+  report('kernel', 'linux · mounting ext2, devs, proc');
   const cx = await CheerpX.Linux.create({
     mounts: [
       { type: 'ext2', path: '/', dev: overlayDevice },

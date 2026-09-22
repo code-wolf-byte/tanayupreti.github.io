@@ -1,3 +1,17 @@
+# The CSE240 PokéMUD, compiled for the guest's own i386 userland. Separate
+# stage so the ~200MB toolchain never reaches the shipped image.
+FROM alpine:3.19 AS pokemud
+RUN apk add --no-cache g++
+COPY pokemud/ /src/
+WORKDIR /src
+# One g++ over every source instead of the course Makefile: the Makefile links
+# pokemud/gym.o, a prebuilt x86-64 object that cannot go in a 32-bit guest, so
+# gym_stub.cpp replaces it (see that file). -static so the shipped image needs
+# no libstdc++ at all, and no -g: debug info is dead weight in a download every
+# visitor pays for.
+RUN g++ -Wall -std=c++17 -static -o pokemud.bin *.cpp pokemud/*.cpp \
+    && strip pokemud.bin
+
 FROM alpine:3.19
 
 RUN apk add --no-cache bash coreutils less nano figlet \
@@ -25,5 +39,14 @@ RUN chmod +x /usr/local/bin/banner /usr/local/bin/about /usr/local/bin/projects 
     && chown user:user /home/user && chmod 755 /home/user \
     && chown -R user:user /home/user/scratch && chmod 755 /home/user/scratch \
     && chmod 644 /home/user/scratch/*
+
+# PokéMUD: on $PATH but absent from `help`, so it rewards poking around.
+COPY --from=pokemud /src/pokemud.bin /usr/local/share/pokemud/pokemud.bin
+COPY --from=pokemud /src/rooms.json /src/items.json /src/pokemon.json \
+      /src/moves.json /src/team.json /usr/local/share/pokemud/
+COPY pokemud/pokemud.sh /usr/local/bin/pokemud
+# The JSON arrived from the course box mode 755; it is data, not programs.
+RUN chmod +x /usr/local/bin/pokemud \
+    && chmod 644 /usr/local/share/pokemud/*.json
 
 WORKDIR /home/user

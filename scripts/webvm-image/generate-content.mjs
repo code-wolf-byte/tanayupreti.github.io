@@ -91,7 +91,7 @@ EOF
 
 // projects
 const projectLines = config.projects
-  .map(([name, desc, link]) => `  ${name.padEnd(16)} ${desc}\n    ${link}`)
+  .map((p) => `  ${p.name.padEnd(16)} ${p.tagline}\n    ${p.stack.join(', ')}\n    ${p.link}`)
   .join('\n\n');
 writeExecutable(
   'usr/local/bin/projects',
@@ -200,10 +200,13 @@ they never reach the real site, and a hard refresh wipes them.
 );
 
 // One file per project, so the file browser has something to browse.
-for (const [name, desc, link] of config.projects) {
+for (const p of config.projects) {
   // Project names come from config.json and become filenames.
-  const safeName = name.replace(/[^A-Za-z0-9._-]/g, '_');
-  writeText(`${HOME}/projects/${safeName}.txt`, `${name}\n\n${desc}\n\n${link}\n`);
+  const safeName = p.name.replace(/[^A-Za-z0-9._-]/g, '_');
+  writeText(
+    `${HOME}/projects/${safeName}.txt`,
+    `${p.name}  [${p.status}, ${p.year}]\n\n${p.tagline}\n\n${p.stack.join(', ')}\n\n${p.link}\n`
+  );
 }
 
 console.log('Generated portfolio content into', overlayDir);
