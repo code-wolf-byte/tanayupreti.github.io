@@ -12,47 +12,20 @@
 }
 
 @keyframes typing {
-  from {
-    width: 0
-  }
-
-  to {
-    width: 100%
-  }
+  from { width: 0 }
+  to   { width: 100% }
 }
 
 html,
 body {
   color: var(--text);
   background-color: var(--bg);
-  height: 100%;
   font-size: 16px;
   display: block;
 }
 
 html {
   overflow: auto;
-}
-
-body {
-  padding: 16px;
-  box-sizing: border-box;
-}
-
-main {
-  display: block;
-  box-sizing: border-box;
-  height: 100%;
-  border: var(--border) solid 2px;
-  border-radius: 2px;
-  overflow-y: auto;
-  overflow-x: hidden;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-}
-
-main::-webkit-scrollbar {
-  display: none;
 }
 
 p {
@@ -102,57 +75,29 @@ a:hover {
   color: var(--bg);
 }
 
-#bars {
-  font-family: 'Pixelify Sans', sans-serif;
-  font-size: 20px;
-  position: -webkit-sticky;
-  position: sticky;
-  width: 100%;
-  top: 0;
-  background-color: var(--bg);
-}
-
-#bar-1 {
-  height: 36px;
-  background-color: var(--border);
-  color: var(--bg);
-  line-height: 36px;
-  padding-left: 10px;
-}
-
-#bar-2 {
-  height: 4px;
-  background-color: var(--border);
-  margin-top: 1px;
-}
-
-#bar-3 {
-  height: 3px;
-  background-color: var(--border);
-  margin-top: 2px;
-}
-
-#bar-4 {
-  height: 2px;
-  background-color: var(--border);
-  margin-top: 3px;
-}
-
-
-#bar-5 {
-  height: 1px;
-  background-color: var(--border);
-  margin-top: 4px;
-}
-
-#terminal {
+/* Terminal content */
+.term-output {
   margin-left: 20px;
 }
 
-#input-line {
+.term-input-line {
   margin-left: 20px;
   overflow-x: hidden;
   width: 100%;
+}
+
+.term-prompt {
+  color: var(--prompt-default);
+}
+
+.term-pre-user,
+.term-user {
+  color: var(--prompt-1);
+}
+
+.term-pre-host,
+.term-host {
+  color: var(--prompt-2);
 }
 
 .command {
@@ -174,7 +119,6 @@ a:hover {
 @media (max-width: 600px) {
   body {
     font-size: 10px;
-    padding: 2px;
     font-weight: 300;
   }
 
@@ -191,19 +135,15 @@ a:hover {
     font-size: 9px;
   }
 
-  main {
-    border-width: 1px;
-  }
-
   div {
     line-height: 14px;
   }
 
-  #terminal {
+  .term-output {
     margin-left: 8px;
   }
 
-  #input-line {
+  .term-input-line {
     margin-left: 8px;
   }
 }

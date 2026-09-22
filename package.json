@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test:vm": "./scripts/vm-test/run.sh"
   },
   "devDependencies": {
     "@types/js-yaml": "^4.0.9",
@@ -14,6 +15,9 @@
     "vite": "^5.0.0"
   },
   "dependencies": {
+    "@xterm/addon-fit": "^0.11.0",
+    "@xterm/xterm": "^6.0.0",
+    "interactjs": "^1.10.27",
     "js-yaml": "^4.1.0"
   }
 }
