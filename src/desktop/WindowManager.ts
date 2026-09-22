@@ -16,7 +16,7 @@ export class WindowManager {
   private cascadeOffset = 0;
   private idCounter = 0;
 
-  onWindowOpened?: (id: WindowId, title: string) => void;
+  onWindowOpened?: (id: WindowId, title: string, accent?: string) => void;
   onWindowClosed?: (id: WindowId) => void;
   onWindowFocused?: (id: WindowId) => void;
   onWindowMinimized?: (id: WindowId, isMinimized: boolean) => void;
@@ -65,7 +65,7 @@ export class WindowManager {
     win.mount(content);
     this.focus(id);
 
-    this.onWindowOpened?.(id, options.title);
+    this.onWindowOpened?.(id, options.title, options.accent);
     return id;
   }
 

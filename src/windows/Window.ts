@@ -35,6 +35,11 @@ export class AppWindow {
     this.element.style.transform = `translate(${x}px, ${y}px)`;
     this.element.setAttribute('data-x', String(x));
     this.element.setAttribute('data-y', String(y));
+    // Redefining --accent on the window re-tints everything inside it that
+    // already uses var(--accent) — borders, focus, LEDs, buttons — with no
+    // per-app CSS. Each app therefore reads as its own colour when windows
+    // overlap, which is the point.
+    if (options.accent) this.element.style.setProperty('--accent', options.accent);
 
     this.element.innerHTML = `
       <div class="window-titlebar">

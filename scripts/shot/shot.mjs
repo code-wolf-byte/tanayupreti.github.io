@@ -16,7 +16,7 @@ await page.screenshot({ path: `${OUT}/01-desktop.png` });
 await page.click('#taskbar-apps');
 await page.waitForTimeout(300);
 await page.screenshot({ path: `${OUT}/02-appsmenu.png` });
-await page.click('text=Projects');
+await page.click('.taskbar-menu-item:has-text("Projects")');
 await page.waitForTimeout(600);
 await page.screenshot({ path: `${OUT}/03-sdn.png` });
 

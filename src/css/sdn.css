@@ -92,7 +92,7 @@
 }
 
 .sdn-unit.selected {
-  background: rgba(255, 107, 201, 0.10);
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
   border-color: var(--accent);
   color: var(--text);
 }

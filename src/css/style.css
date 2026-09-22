@@ -9,9 +9,14 @@
   --line: #26242F;      /* every structural border */
   --text: #E6E3EC;
   --text-dim: #8B8796;
-  --accent: #FF6BC9;    /* focus, active, cursor, selection — nothing else */
+  /* Aliased, not literal: a window redefines --accent to its app colour, and
+     `--accent: var(--accent)` would be a self-reference that resolves to
+     nothing. Pointing at --app-projects keeps one hex and no cycle. */
+  --app-projects: #FF6BC9;
+  --accent: var(--app-projects);  /* focus, active, cursor, selection */
   --accent-2: #70FDFF;  /* paths and links only */
-  --warn: #FF9951;      /* boot banner, dirty marker */
+  --ok: #7CE3A4;        /* success, writable, the Editor's app colour */
+  --warn: #FF9951;      /* boot banner, dirty marker, the Files app colour */
   --error: #FF5C5C;
 }
 
@@ -34,7 +39,7 @@ a:hover {
 
 /* Selection reads as the accent everywhere, including inside the editor. */
 ::selection {
-  background: rgba(255, 107, 201, 0.30);
+  background: color-mix(in srgb, var(--accent) 30%, transparent);
   color: var(--text);
 }
 
