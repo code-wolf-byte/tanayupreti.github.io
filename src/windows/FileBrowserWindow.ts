@@ -74,7 +74,7 @@ export class FileBrowserWindow implements WindowContent {
     this.listEl.innerHTML = '';
 
     if (this.cwd !== '/') {
-      this.listEl.appendChild(this.row({ name: '..', isDir: true }, parentOf(this.cwd)));
+      this.listEl.appendChild(this.row({ name: '..', isDir: true, writable: true }, parentOf(this.cwd)));
     }
     for (const entry of sorted) {
       this.listEl.appendChild(this.row(entry, joinPath(this.cwd, entry.name)));
@@ -89,8 +89,13 @@ export class FileBrowserWindow implements WindowContent {
   }
 
   private row(entry: DirEntry, target: string): HTMLElement {
+    // Only files carry a lock: for a directory "writable" means create/delete,
+    // a different idea from "you can't edit this", so it would mislead.
+    const readOnly = !entry.isDir && !entry.writable;
+
     const li = document.createElement('li');
     li.className = entry.isDir ? 'fb-row fb-dir' : 'fb-row fb-file';
+    if (readOnly) li.classList.add('fb-readonly');
     li.tabIndex = 0;
 
     const icon = document.createElement('span');
@@ -103,6 +108,14 @@ export class FileBrowserWindow implements WindowContent {
     name.textContent = entry.name;
 
     li.append(icon, name);
+
+    if (readOnly) {
+      const lock = document.createElement('span');
+      lock.className = 'fb-lock';
+      lock.textContent = '🔒';
+      lock.title = 'read-only';
+      li.appendChild(lock);
+    }
 
     const open = () => {
       if (entry.isDir) void this.navigate(target);

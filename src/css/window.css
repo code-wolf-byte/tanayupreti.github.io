@@ -4,19 +4,23 @@
   top: 0;
   left: 0;
   box-sizing: border-box;
-  border: 2px solid var(--border);
-  border-radius: 2px;
+  border: 1px solid var(--line);
+  border-radius: 3px;
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  background: var(--bg);
+  background: var(--surface);
   min-width: 240px;
   min-height: 120px;
-  transition: box-shadow 0.15s ease;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
+/* Depth from the shadow, identity from the hairline. The old 28px pink bloom
+   made every window shout; only the focused one should. */
 .window.focused {
-  box-shadow: 0 0 28px rgba(255, 173, 226, 0.45);
+  border-color: var(--accent);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.55);
 }
 
 .window.minimized {
@@ -35,15 +39,24 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 36px;
+  gap: 8px;
+  height: 32px;
   padding: 0 10px;
-  background: var(--border);
-  color: var(--bg);
-  font-family: 'Pixelify Sans', sans-serif;
-  font-size: 20px;
+  background: var(--surface);
+  color: var(--text-dim);
+  border-bottom: 1px solid var(--line);
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
   cursor: move;
   user-select: none;
   flex-shrink: 0;
+}
+
+.window.focused .window-titlebar {
+  color: var(--text);
 }
 
 .window-title {
@@ -53,44 +66,59 @@
   white-space: nowrap;
 }
 
+/* Unsaved editor buffer. --warn is the one place amber appears in the UI. */
+.window-title.dirty,
+.window.focused .window-title.dirty {
+  color: var(--warn);
+}
+
 .window-controls {
   display: flex;
-  gap: 4px;
+  gap: 2px;
   flex-shrink: 0;
 }
 
 .window-btn {
-  background: var(--bg);
-  color: var(--border);
-  border: 1px solid transparent;
-  width: 20px;
-  height: 20px;
+  background: transparent;
+  color: var(--text-dim);
+  border: none;
+  width: 22px;
+  height: 22px;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 13px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: monospace;
+  font-family: inherit;
   line-height: 1;
-  border-radius: 1px;
+  border-radius: 2px;
   padding: 0;
 }
 
 .window-btn:hover {
-  background: rgba(255, 173, 226, 0.2);
-  color: var(--border);
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text);
 }
 
 .window-btn.window-close:hover {
-  background: #cc2222;
-  color: white;
+  background: var(--error);
+  color: var(--bg);
 }
 
-/* Decorative bars below titlebar */
+/* Decorative bars below the titlebar. They double as the focus indicator:
+   inert line colour normally, accent on the focused window. */
 .window-deco-bar {
-  background: var(--border);
+  background: var(--line);
   flex-shrink: 0;
+  transition: background 0.15s ease;
 }
+
+/* Child order is fixed by the template in Window.ts: titlebar, then these
+   four. Fading them keeps the Amiga-ish detail without a solid pink slab. */
+.window.focused .window-deco-bar:nth-child(2) { background: var(--accent); }
+.window.focused .window-deco-bar:nth-child(3) { background: color-mix(in srgb, var(--accent) 55%, transparent); }
+.window.focused .window-deco-bar:nth-child(4) { background: color-mix(in srgb, var(--accent) 30%, transparent); }
+.window.focused .window-deco-bar:nth-child(5) { background: color-mix(in srgb, var(--accent) 15%, transparent); }
 
 /* Content area */
 .window-content {
@@ -154,24 +182,159 @@
 }
 
 /* VM window */
-.vm-status {
-  padding: 16px;
-  font-family: monospace;
-  font-size: 14px;
-  color: var(--border);
+.vm {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
-.vm-status-error {
-  color: #ff6b6b;
+/* The console is absolutely positioned in here so the boot overlay can be
+   removed without resizing it. CheerpX 1.2.8 tells the guest its dimensions
+   exactly once, so a post-boot reflow would desync the terminal for good. */
+.vm-screen {
+  position: relative;
+  flex: 1;
+  min-height: 0;
 }
 
 .vm-console {
-  width: 100%;
-  height: 100%;
+  position: absolute;
+  inset: 0;
   margin: 0;
-  background: black;
-  color: #d0d0d0;
+  background: var(--bg);
   outline: none;
+}
+
+/* The claim the whole page rests on, stated plainly and permanently. Fixed
+   height, never dismissible — collapsing it would resize the terminal. */
+.vm-banner {
+  flex-shrink: 0;
+  padding: 7px 12px;
+  border-top: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.02);
+  font-size: 11px;
+  line-height: 1.5;
+  color: var(--text-dim);
+}
+
+.vm-banner b {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+/* Power-on self test */
+.vm-boot {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  padding: 18px 20px;
+  background: var(--bg);
+  font-size: 12px;
+  line-height: 1.5;
+  overflow: hidden;
+  opacity: 1;
+  transition: opacity 0.35s ease;
+}
+
+.vm-boot.is-leaving {
+  opacity: 0;
+}
+
+.vm-boot-head {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  flex-shrink: 0;
+  margin-bottom: 14px;
+}
+
+.vm-boot-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: 0.02em;
+}
+
+.vm-boot-sub {
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+.vm-boot-log {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.vm-boot-row {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  white-space: nowrap;
+}
+
+.vm-boot-mark {
+  flex-shrink: 0;
+  color: var(--text-dim);
+}
+
+.vm-boot-row.is-ok .vm-boot-mark {
+  color: var(--accent-2);
+}
+
+.vm-boot-row.is-fail .vm-boot-mark,
+.vm-boot-error {
+  color: var(--error);
+}
+
+.vm-boot-label {
+  flex-shrink: 0;
+  min-width: 11ch;
+  color: var(--text);
+}
+
+/* Types itself out at a steady rate; --n is the character count, set inline. */
+.vm-boot-note {
+  overflow: hidden;
+  color: var(--text-dim);
+  animation: vm-type 0.35s steps(var(--n, 20)) both;
+}
+
+@keyframes vm-type {
+  from { max-width: 0; }
+  to { max-width: calc(var(--n, 20) * 1ch); }
+}
+
+.vm-boot-ms {
+  margin-left: auto;
+  padding-left: 12px;
+  flex-shrink: 0;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-dim);
+}
+
+/* Progress reflects real completed stages, not a timer. */
+.vm-boot-bar {
+  flex-shrink: 0;
+  height: 2px;
+  margin-top: 14px;
+  background: var(--line);
+}
+
+.vm-boot-bar i {
+  display: block;
+  height: 100%;
+  width: 0;
+  background: var(--accent);
+  transition: width 0.4s ease;
+}
+
+.vm-boot-bar.is-fail i {
+  background: var(--error);
 }
 
 /* File browser */
@@ -179,16 +342,16 @@
   display: flex;
   flex-direction: column;
   height: 100%;
-  background: var(--bg);
+  background: var(--surface);
   color: var(--text);
   font-size: 13px;
 }
 
 .fb-path {
   flex-shrink: 0;
-  padding: 6px 10px;
-  border-bottom: 1px solid var(--border);
-  color: var(--prompt-2);
+  padding: 7px 10px;
+  border-bottom: 1px solid var(--line);
+  color: var(--accent-2);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -206,46 +369,61 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 3px 10px;
+  padding: 4px 10px;
   cursor: pointer;
   user-select: none;
-  outline: none;
+  border-left: 2px solid transparent;
 }
 
+/* A tint plus an accent edge, not a full-bleed fill: a file list is scanned,
+   and a solid block on every hover fights the scan. */
 .fb-row:hover,
-.fb-row:focus {
-  background: var(--border);
-  color: var(--bg);
+.fb-row:focus-visible {
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
+  border-left-color: var(--accent);
+  outline: none;
 }
 
 .fb-icon {
   width: 1em;
   flex-shrink: 0;
   text-align: center;
+  color: var(--text-dim);
 }
 
 .fb-name {
+  flex: 1;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
 .fb-dir .fb-name {
-  color: var(--prompt-1);
+  color: var(--text);
+  font-weight: 500;
 }
 
-.fb-row:hover .fb-name,
-.fb-row:focus .fb-name {
-  color: var(--bg);
+.fb-dir .fb-icon {
+  color: var(--accent);
+}
+
+.fb-readonly .fb-name {
+  color: var(--text-dim);
+}
+
+.fb-lock {
+  flex-shrink: 0;
+  font-size: 11px;
+  color: var(--text-dim);
 }
 
 .fb-msg {
   padding: 6px 10px;
-  color: var(--prompt-default);
+  color: var(--text-dim);
 }
 
 .fb-error {
-  color: #ff6b6b;
+  color: var(--error);
   white-space: pre-wrap;
 }
 
@@ -254,7 +432,7 @@
   display: flex;
   flex-direction: column;
   height: 100%;
-  background: var(--bg);
+  background: var(--surface);
   color: var(--text);
   font-size: 13px;
 }
@@ -264,33 +442,38 @@
   align-items: center;
   gap: 8px;
   flex-shrink: 0;
-  padding: 5px 10px;
-  border-bottom: 1px solid var(--border);
+  padding: 6px 10px;
+  border-bottom: 1px solid var(--line);
 }
 
 .ed-path {
   flex: 1;
-  color: var(--prompt-2);
+  color: var(--accent-2);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
+/* Save is the one primary action on the page, so it keeps the solid fill. */
 .ed-save {
   flex-shrink: 0;
   font-family: inherit;
-  font-size: 12px;
-  padding: 1px 10px;
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 3px 12px;
   cursor: pointer;
-  background: var(--border);
+  border-radius: 2px;
+  background: var(--accent);
   color: var(--bg);
-  border: 1px solid var(--border);
+  border: 1px solid var(--accent);
 }
 
 .ed-save:disabled {
   background: transparent;
-  color: var(--prompt-default);
-  border-color: var(--prompt-default);
+  color: var(--text-dim);
+  border-color: var(--line);
   cursor: default;
 }
 
@@ -299,23 +482,57 @@
   resize: none;
   border: none;
   outline: none;
-  padding: 8px 10px;
-  background: var(--bg);
+  padding: 10px;
+  background: var(--surface);
   color: var(--text);
   font-family: inherit;
   font-size: 13px;
-  line-height: 1.5;
+  line-height: 1.6;
   tab-size: 4;
 }
 
 .ed-status {
   flex-shrink: 0;
-  padding: 4px 10px;
-  border-top: 1px solid var(--border);
-  color: var(--prompt-default);
+  padding: 5px 10px;
+  border-top: 1px solid var(--line);
+  color: var(--text-dim);
   white-space: pre-wrap;
 }
 
 .ed-error {
-  color: #ff6b6b;
+  color: var(--error);
+}
+
+/* Mobile: the desktop metaphor (overlapping, draggable, tiled windows) doesn't
+   fit a phone. Below 700px each window fills the screen and only the focused
+   one shows; you switch apps from the taskbar + Apps menu. */
+@media (max-width: 700px) {
+  .window {
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    min-width: 0;
+    transform: none !important;
+    border-width: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  /* One app at a time. Switch by focusing another (tap its taskbar button). */
+  .window:not(.focused) {
+    display: none;
+  }
+
+  /* Full-screen already; drag/minimize/maximize are meaningless here. */
+  .window-minimize,
+  .window-maximize,
+  .resize-handle {
+    display: none;
+  }
+
+  /* Bigger touch target for the one control that remains. */
+  .window-btn {
+    width: 32px;
+    height: 32px;
+  }
 }

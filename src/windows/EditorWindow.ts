@@ -1,4 +1,4 @@
-import { readFile, writeFile } from '../webvm/vm';
+import { isWritable, readFile, writeFile } from '../webvm/vm';
 import type { WindowContent } from '../types';
 
 export const baseName = (path: string): string => path.split('/').filter(Boolean).pop() ?? path;
@@ -9,6 +9,9 @@ export class EditorWindow implements WindowContent {
   private saveBtn!: HTMLButtonElement;
   private loaded = '';
 
+  /** Fires when the unsaved state flips, so the window title can show a marker. */
+  onDirtyChange?: (isDirty: boolean) => void;
+
   constructor(private readonly path: string) {}
 
   mount(container: HTMLElement): void {
@@ -18,7 +21,7 @@ export class EditorWindow implements WindowContent {
           <span class="ed-path"></span>
           <button class="ed-save" disabled>Save</button>
         </div>
-        <textarea class="ed-text" spellcheck="false" disabled></textarea>
+        <textarea class="ed-text" spellcheck="false" readonly></textarea>
         <div class="ed-status">Loading…</div>
       </div>
     `;
@@ -48,16 +51,24 @@ export class EditorWindow implements WindowContent {
   }
 
   private refreshDirty(): void {
-    this.saveBtn.disabled = !this.isDirty;
+    const dirty = this.isDirty;
+    this.saveBtn.disabled = !dirty;
+    this.onDirtyChange?.(dirty);
   }
 
   private async load(): Promise<void> {
     try {
       const text = await readFile(this.path);
+      const writable = await isWritable(this.path);
+
       this.loaded = text;
       this.textarea.value = text;
-      this.textarea.disabled = false;
-      this.setStatus(`${text.split('\n').length} lines`);
+      this.textarea.readOnly = !writable;
+      // readOnly (not disabled) keeps read-only text selectable and scrollable.
+      this.saveBtn.hidden = !writable;
+
+      const lines = `${text.split('\n').length} lines`;
+      this.setStatus(writable ? lines : `${lines} · read-only`);
       this.refreshDirty();
       this.textarea.focus();
     } catch (err) {

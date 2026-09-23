@@ -13,7 +13,7 @@ const DISK_IMAGE_URL = '/webvm/alpine.ext2';
 // alpine.ext2 shifts the blocks underneath it, so bump this suffix whenever the
 // image is rebuilt — otherwise returning visitors keep a stale overlay over a
 // new base and see the old filesystem (or a corrupted mix).
-const OVERLAY_STORE_NAME = 'webvm-alpine-overlay-2';
+const OVERLAY_STORE_NAME = 'webvm-alpine-overlay-7';
 const RPC_STORE_NAME = 'webvm-rpc';
 
 // Paths as the guest sees them; the device-relative twin is the same minus the mount point.
@@ -34,6 +34,38 @@ export function vm(): Promise<Vm> {
   return vmPromise;
 }
 
+export interface VmStage {
+  /** 1-based, against TOTAL_STAGES. */
+  step: number;
+  label: string;
+  note: string;
+}
+
+/** Stages reported by boot() below. Keep in step with the report() calls. */
+export const TOTAL_STAGES = 5;
+
+type StageListener = (stage: VmStage) => void;
+const stageListeners = new Set<StageListener>();
+const stageHistory: VmStage[] = [];
+
+/**
+ * Subscribe to boot progress. Stages already passed are replayed immediately,
+ * so a window that opens mid-boot still draws the whole sequence — the file
+ * browser and the terminal both trigger vm() and either may get there first.
+ */
+export function onVmStage(fn: StageListener): () => void {
+  stageHistory.forEach(fn);
+  stageListeners.add(fn);
+  return () => stageListeners.delete(fn);
+}
+
+/** Called as each stage *begins*, so the UI can time it honestly. */
+function report(label: string, note: string): void {
+  const stage: VmStage = { step: stageHistory.length + 1, label, note };
+  stageHistory.push(stage);
+  stageListeners.forEach((fn) => fn(stage));
+}
+
 async function boot(): Promise<Vm> {
   if (!window.crossOriginIsolated) {
     // coi-serviceworker normally reloads us into an isolated context on first
@@ -42,16 +74,23 @@ async function boot(): Promise<Vm> {
     throw new Error('reloading to obtain cross-origin isolation');
   }
 
+  report('cheerpx', 'x86 emulator · webassembly');
   const CheerpX = await loadCheerpX();
 
+  report('block device', 'alpine.ext2 · streamed over https');
   const blockDevice = await CheerpX.HttpBytesDevice.create(DISK_IMAGE_URL);
+
+  report('overlay', 'indexeddb · your writes never leave this browser');
   const overlayDevice = await CheerpX.OverlayDevice.create(
     blockDevice,
     await CheerpX.IDBDevice.create(OVERLAY_STORE_NAME)
   );
+
+  report('devices', 'rpc + data channels');
   const out = await CheerpX.IDBDevice.create(RPC_STORE_NAME);
   const data = await CheerpX.DataDevice.create();
 
+  report('kernel', 'linux · mounting ext2, devs, proc');
   const cx = await CheerpX.Linux.create({
     mounts: [
       { type: 'ext2', path: '/', dev: overlayDevice },
@@ -95,18 +134,41 @@ export function exec(cmd: string): Promise<string> {
 export interface DirEntry {
   name: string;
   isDir: boolean;
+  writable: boolean;
 }
 
-/** `ls -Ap` marks directories with a trailing slash, which is all we need. */
+/**
+ * List a directory with per-entry type and writability, in one RPC. Writability
+ * is a real `test -w` as the VM's uid, so it matches what a save would do — the
+ * file browser uses it to mark read-only files without a round-trip each.
+ * Output line format: "<d|f> <w|r> <name>".
+ */
 export async function list(path: string): Promise<DirEntry[]> {
-  const text = await exec(`ls -Ap ${quote(path)}`);
+  const text = await exec(
+    `cd ${quote(path)} && ls -A | while IFS= read -r e; do ` +
+      `t=f; [ -d "$e" ] && t=d; w=r; [ -w "$e" ] && w=w; ` +
+      `printf '%s %s %s\\n' "$t" "$w" "$e"; done`
+  );
   return text
     .split('\n')
     .filter((line) => line.length > 0)
-    .map((name) => ({ name: name.replace(/\/$/, ''), isDir: name.endsWith('/') }));
+    .map((line) => {
+      const m = /^(.) (.) (.*)$/.exec(line);
+      // Defensive: a name that somehow lacks the prefix is treated as a plain file.
+      if (!m) return { name: line, isDir: false, writable: false };
+      return { name: m[3], isDir: m[1] === 'd', writable: m[2] === 'w' };
+    });
 }
 
 export const readFile = (path: string): Promise<string> => exec(`cat ${quote(path)}`);
+
+/**
+ * Whether the VM's user can write this path. Runs as the same uid as
+ * writeFile (1000), so it can't disagree with what a save would actually do.
+ */
+export const isWritable = async (path: string): Promise<boolean> =>
+  // `|| echo no`: test exits non-zero when not writable, and exec throws on that.
+  (await exec(`test -w ${quote(path)} && echo yes || echo no`)).trim() === 'yes';
 
 let scratchSeq = 0;
 

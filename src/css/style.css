@@ -1,19 +1,23 @@
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@200;300;400;600&family=Pixelify+Sans&family=VT323&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&display=swap');
 
 :root {
-  font-family: 'IBM Plex Mono', monospace;
-  font-weight: 200;
-  --bg: #0C0623;
-  --border: #FFADE2;
-  --text: #F8DDE5;
-  --prompt-default: #A5A7A7;
-  --prompt-1: #FE6BC9;
-  --prompt-2: #70FDFF;
-}
+  font-family: 'IBM Plex Mono', ui-monospace, monospace;
+  font-weight: 400;
 
-@keyframes typing {
-  from { width: 0 }
-  to   { width: 100% }
+  --bg: #0B0A0F;        /* desktop void, near-black with a faint violet cast */
+  --surface: #14131A;   /* window body + titlebar */
+  --line: #26242F;      /* every structural border */
+  --text: #E6E3EC;
+  --text-dim: #8B8796;
+  /* Aliased, not literal: a window redefines --accent to its app colour, and
+     `--accent: var(--accent)` would be a self-reference that resolves to
+     nothing. Pointing at --app-projects keeps one hex and no cycle. */
+  --app-projects: #FF6BC9;
+  --accent: var(--app-projects);  /* focus, active, cursor, selection */
+  --accent-2: #70FDFF;  /* paths and links only */
+  --ok: #7CE3A4;        /* success, writable, the Editor's app colour */
+  --warn: #FF9951;      /* boot banner, dirty marker, the Files app colour */
+  --error: #FF5C5C;
 }
 
 html,
@@ -21,129 +25,41 @@ body {
   color: var(--text);
   background-color: var(--bg);
   font-size: 16px;
-  display: block;
-}
-
-html {
-  overflow: auto;
-}
-
-p {
-  display: block;
-  line-height: 22px;
-  animation: typing 0.5s steps(30, end);
-  white-space: nowrap;
-  overflow: hidden;
-}
-
-div {
-  line-height: 22px;
-}
-
-@font-face {
-  font-family: ascii;
-  src: url("./font/IBMPlexMono-Thin.ttf")
-}
-
-pre {
-  margin: 0;
-  padding: 0;
-  line-height: 20px !important;
-  color: #FF9951;
-  font-family: "ascii", monospace;
-}
-
-input {
-  font-family: 'IBM Plex Mono', monospace;
-  padding: 0px;
-  margin: 0px;
-  border: none;
-  resize: none;
-  outline: none;
-  font-size: 16px;
-  color: #FF7685;
-  caret-color: var(--prompt-default);
-  width: 50%;
 }
 
 a {
-  color: #B6AAEE;
+  color: var(--accent-2);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(112, 253, 255, 0.35);
 }
 
 a:hover {
-  background-color: var(--border);
-  color: var(--bg);
+  border-bottom-color: var(--accent-2);
 }
 
-/* Terminal content */
-.term-output {
-  margin-left: 20px;
+/* Selection reads as the accent everywhere, including inside the editor. */
+::selection {
+  background: color-mix(in srgb, var(--accent) 30%, transparent);
+  color: var(--text);
 }
 
-.term-input-line {
-  margin-left: 20px;
-  overflow-x: hidden;
-  width: 100%;
+/* Keyboard users need a visible ring; mouse users shouldn't get an outline
+   on every click. :focus-visible is exactly that split. */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
 }
 
-.term-prompt {
-  color: var(--prompt-default);
-}
-
-.term-pre-user,
-.term-user {
-  color: var(--prompt-1);
-}
-
-.term-pre-host,
-.term-host {
-  color: var(--prompt-2);
-}
-
-.command {
-  text-shadow:
-    0 0 7px #fff,
-    0 0 151px var(--border);
-  color: #FD9BDB;
-}
-
-.output {
-  font-weight: 400 !important;
-}
-
-.keys {
-  color: #FF9951;
-  font-weight: 400;
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
 }
 
 @media (max-width: 600px) {
+  html,
   body {
-    font-size: 10px;
-    font-weight: 300;
-  }
-
-  input {
-    font-size: 10px;
-  }
-
-  p {
-    line-height: 14px;
-  }
-
-  pre {
-    line-height: 12px !important;
-    font-size: 9px;
-  }
-
-  div {
-    line-height: 14px;
-  }
-
-  .term-output {
-    margin-left: 8px;
-  }
-
-  .term-input-line {
-    margin-left: 8px;
+    font-size: 13px;
   }
 }

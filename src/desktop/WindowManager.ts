@@ -16,7 +16,7 @@ export class WindowManager {
   private cascadeOffset = 0;
   private idCounter = 0;
 
-  onWindowOpened?: (id: WindowId, title: string) => void;
+  onWindowOpened?: (id: WindowId, title: string, accent?: string) => void;
   onWindowClosed?: (id: WindowId) => void;
   onWindowFocused?: (id: WindowId) => void;
   onWindowMinimized?: (id: WindowId, isMinimized: boolean) => void;
@@ -65,7 +65,7 @@ export class WindowManager {
     win.mount(content);
     this.focus(id);
 
-    this.onWindowOpened?.(id, options.title);
+    this.onWindowOpened?.(id, options.title, options.accent);
     return id;
   }
 
@@ -92,6 +92,10 @@ export class WindowManager {
     record.instance.destroy();
     this.windows.delete(id);
     this.onWindowClosed?.(id);
+    // Surface the most recent remaining window. On mobile only the focused one
+    // shows, so without this, closing the visible app leaves a blank screen.
+    const next = [...this.windows.keys()].pop();
+    if (next) this.focus(next);
   }
 
   minimize(id: WindowId): void {
@@ -114,6 +118,11 @@ export class WindowManager {
     } else {
       this.minimize(id);
     }
+  }
+
+  setTitle(id: WindowId, title: string, dirty = false): void {
+    // Titlebar only; the taskbar button keeps the base name, which is fine.
+    this.windows.get(id)?.instance.setTitle(title, dirty);
   }
 
   hasWindow(id: WindowId): boolean {

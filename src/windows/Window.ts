@@ -5,6 +5,7 @@ export class AppWindow {
   readonly id: WindowId;
   readonly element: HTMLElement;
   private readonly titlebarEl: HTMLElement;
+  private readonly titleEl: HTMLElement;
   private readonly contentEl: HTMLElement;
   private readonly desktopArea: HTMLElement;
   private content: WindowContent | null = null;
@@ -34,6 +35,11 @@ export class AppWindow {
     this.element.style.transform = `translate(${x}px, ${y}px)`;
     this.element.setAttribute('data-x', String(x));
     this.element.setAttribute('data-y', String(y));
+    // Redefining --accent on the window re-tints everything inside it that
+    // already uses var(--accent) — borders, focus, LEDs, buttons — with no
+    // per-app CSS. Each app therefore reads as its own colour when windows
+    // overlap, which is the point.
+    if (options.accent) this.element.style.setProperty('--accent', options.accent);
 
     this.element.innerHTML = `
       <div class="window-titlebar">
@@ -57,6 +63,7 @@ export class AppWindow {
     `;
 
     this.titlebarEl = this.element.querySelector('.window-titlebar') as HTMLElement;
+    this.titleEl = this.element.querySelector('.window-title') as HTMLElement;
     this.contentEl = this.element.querySelector('.window-content') as HTMLElement;
 
     this.bindControls();
@@ -156,6 +163,12 @@ export class AppWindow {
   mount(content: WindowContent): void {
     this.content = content;
     content.mount(this.contentEl);
+  }
+
+  setTitle(title: string, dirty = false): void {
+    // textContent, not innerHTML: title can derive from a guest filename.
+    this.titleEl.textContent = title;
+    this.titleEl.classList.toggle('dirty', dirty);
   }
 
   focus(): void {
