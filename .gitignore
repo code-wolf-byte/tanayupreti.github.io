@@ -32,3 +32,8 @@ scripts/vm-test/vmtest.js
 *.sln
 *.sw?
 shots/
+
+# PokéMUD source is live CSE240 coursework; only the prebuilt binary is committed.
+scripts/webvm-image/pokemud/*.cpp
+scripts/webvm-image/pokemud/*.h
+scripts/webvm-image/pokemud/pokemud/

@@ -1,0 +1,1930 @@
+[
+  {
+    "id": 0,
+    "name": "barrel beer",
+    "description": "A beer barrel has been left here.",
+    "value": 10,
+    "type": "general"
+  },
+  {
+    "id": 1,
+    "name": "bottle beer",
+    "description": "A beer bottle has been left here.",
+    "value": 5,
+    "type": "general"
+  },
+  {
+    "id": 2,
+    "name": "bottle ale",
+    "description": "A dark bottle of ale has been left here.",
+    "value": 7,
+    "type": "general"
+  },
+  {
+    "id": 3,
+    "name": "bottle firebreather",
+    "description": "A bottle of firebreather has been left here.",
+    "value": 8,
+    "type": "general"
+  },
+  {
+    "id": 4,
+    "name": "bottle local",
+    "description": "A dark bottle has been left here.",
+    "value": 6,
+    "type": "general"
+  },
+  {
+    "id": 5,
+    "name": "scimitar blade",
+    "description": "Hassan's scimitar lies upon the ground, waiting for its owner.",
+    "damage": 8,
+    "value": 50,
+    "type": "weapon"
+  },
+  {
+    "id": 6,
+    "name": "stone",
+    "description": "Somebody left their Clan Stone here.",
+    "value": 15,
+    "type": "quest"
+  },
+  {
+    "id": 9,
+    "name": "potpie pot pie",
+    "description": "A big pot pie has been left here.",
+    "value": 3,
+    "type": "general"
+  },
+  {
+    "id": 10,
+    "name": "pit",
+    "description": "A pit for sacrifices is in front of the altar.",
+    "value": 0,
+    "type": "general"
+  },
+  {
+    "id": 11,
+    "name": "bread",
+    "description": "A loaf of bread is here. It doesn't look too stale.",
+    "value": 2,
+    "type": "general"
+  },
+  {
+    "id": 12,
+    "name": "cinnamon roll",
+    "description": "A piping hot cinnamon roll is here. It looks delicious!",
+    "value": 3,
+    "type": "general"
+  },
+  {
+    "id": 13,
+    "name": "cookies",
+    "description": "A plate of chocolate chip cookies is here.",
+    "value": 4,
+    "type": "general"
+  },
+  {
+    "id": 14,
+    "name": "danish blueberry",
+    "description": "A scrumptious blueberry danish is here.",
+    "value": 3,
+    "type": "general"
+  },
+  {
+    "id": 20,
+    "name": "dagger",
+    "description": "A dagger with a long thin blade is here.",
+    "damage": 5,
+    "value": 25,
+    "type": "weapon"
+  },
+  {
+    "id": 21,
+    "name": "sword small",
+    "description": "A small sword lies here.",
+    "damage": 6,
+    "value": 30,
+    "type": "weapon"
+  },
+  {
+    "id": 22,
+    "name": "sword long",
+    "description": "A long sword has been left here.",
+    "damage": 8,
+    "value": 40,
+    "type": "weapon"
+  },
+  {
+    "id": 23,
+    "name": "club",
+    "description": "A stout wooden club is here.",
+    "damage": 4,
+    "value": 20,
+    "type": "weapon"
+  },
+  {
+    "id": 24,
+    "name": "mace heavy",
+    "description": "A heavy iron mace is here.",
+    "damage": 9,
+    "value": 35,
+    "type": "weapon"
+  },
+  {
+    "id": 25,
+    "name": "axe hand",
+    "description": "A small hand axe lies forgotten on the floor.",
+    "damage": 5,
+    "value": 25,
+    "type": "weapon"
+  },
+  {
+    "id": 26,
+    "name": "axe battle",
+    "description": "A large steel axe rests on the ground.",
+    "damage": 8,
+    "value": 45,
+    "type": "weapon"
+  },
+  {
+    "id": 27,
+    "name": "spear",
+    "description": "A long spear leans against the wall.",
+    "damage": 6,
+    "value": 30,
+    "type": "weapon"
+  },
+  {
+    "id": 28,
+    "name": "staff",
+    "description": "A stout wooden staff lies on the floor.",
+    "damage": 3,
+    "value": 15,
+    "type": "weapon"
+  },
+  {
+    "id": 29,
+    "name": "flail",
+    "description": "A small iron flail is here.",
+    "damage": 4,
+    "value": 25,
+    "type": "weapon"
+  },
+  {
+    "id": 30,
+    "name": "torch",
+    "description": "A large torch.",
+    "value": 5,
+    "type": "general"
+  },
+  {
+    "id": 31,
+    "name": "lantern",
+    "description": "A hooded brass lantern has been left here.",
+    "value": 10,
+    "type": "general"
+  },
+  {
+    "id": 32,
+    "name": "bag",
+    "description": "A small bag.",
+    "value": 2,
+    "type": "general"
+  },
+  {
+    "id": 33,
+    "name": "box",
+    "description": "A small box.",
+    "value": 2,
+    "type": "general"
+  },
+  {
+    "id": 39,
+    "name": "scroll cancellation",
+    "description": "A rolled vellum scroll is here.",
+    "value": 20,
+    "type": "quest"
+  },
+  {
+    "id": 40,
+    "name": "scroll identify",
+    "description": "A scroll has carelessly been left here.",
+    "value": 15,
+    "type": "quest"
+  },
+  {
+    "id": 41,
+    "name": "potion yellow",
+    "description": "A small yellow potion has carelessly been left here.",
+    "value": 10,
+    "type": "potion"
+  },
+  {
+    "id": 42,
+    "name": "scroll recall",
+    "description": "A scroll has carelessly been left here.",
+    "value": 15,
+    "type": "quest"
+  },
+  {
+    "id": 43,
+    "name": "ring protection",
+    "description": "An enchanted ring of protection sits on the floor.",
+    "value": 50,
+    "type": "armor"
+  },
+  {
+    "id": 44,
+    "name": "wand magic missile missiles",
+    "description": "A wooden stick lies on the ground.",
+    "damage": 8,
+    "value": 30,
+    "type": "weapon"
+  },
+  {
+    "id": 45,
+    "name": "jacket scale mail",
+    "description": "A scale mail jacket is lying on the ground.",
+    "value": 70,
+    "type": "armor"
+  },
+  {
+    "id": 46,
+    "name": "bronze breast plate",
+    "description": "A bronze breast plate is lying on the ground.",
+    "value": 60,
+    "type": "armor"
+  },
+  {
+    "id": 47,
+    "name": "bronze breast plate",
+    "description": "A special bronze breast plate is lying on the ground.",
+    "value": 80,
+    "type": "armor"
+  },
+  {
+    "id": 50,
+    "name": "raft",
+    "description": "A raft has been left here.",
+    "value": 40,
+    "type": "general"
+  },
+  {
+    "id": 51,
+    "name": "canoe",
+    "description": "A canoe has been left here.",
+    "value": 50,
+    "type": "general"
+  },
+  {
+    "id": 52,
+    "name": "bracer strong leather",
+    "description": "A strong leather bracer is here.",
+    "value": 20,
+    "type": "armor"
+  },
+  {
+    "id": 53,
+    "name": "belt leather",
+    "description": "A soft leather belt is here.",
+    "value": 10,
+    "type": "armor"
+  },
+  {
+    "id": 54,
+    "name": "girdle leather",
+    "description": "A wide leather girdle is here.",
+    "value": 15,
+    "type": "armor"
+  },
+  {
+    "id": 60,
+    "name": "jerkin leather",
+    "description": "A leather jerkin is lying on the ground.",
+    "value": 25,
+    "type": "armor"
+  },
+  {
+    "id": 61,
+    "name": "cap leather",
+    "description": "A leather cap is lying on the ground.",
+    "value": 10,
+    "type": "armor"
+  },
+  {
+    "id": 62,
+    "name": "pants leather",
+    "description": "A pair of leather pants is lying on the ground.",
+    "value": 20,
+    "type": "armor"
+  },
+  {
+    "id": 63,
+    "name": "boots leather",
+    "description": "A pair of leather boots lies here.",
+    "value": 15,
+    "type": "armor"
+  },
+  {
+    "id": 64,
+    "name": "gloves leather",
+    "description": "A pair of leather gloves is lying on the ground.",
+    "value": 10,
+    "type": "armor"
+  },
+  {
+    "id": 65,
+    "name": "sleeves leather",
+    "description": "A pair of leather sleeves is lying on the ground.",
+    "value": 10,
+    "type": "armor"
+  },
+  {
+    "id": 66,
+    "name": "jerkin hard leather",
+    "description": "A hard leather jerkin is lying on the ground.",
+    "value": 30,
+    "type": "armor"
+  },
+  {
+    "id": 67,
+    "name": "cap hard leather",
+    "description": "A hard leather cap is lying on the ground.",
+    "value": 15,
+    "type": "armor"
+  },
+  {
+    "id": 68,
+    "name": "pants hard leather",
+    "description": "A pair of hard leather pants is lying on the ground.",
+    "value": 25,
+    "type": "armor"
+  },
+  {
+    "id": 69,
+    "name": "boots hard leather",
+    "description": "A pair of hard leather boots lies here.",
+    "value": 20,
+    "type": "armor"
+  },
+  {
+    "id": 70,
+    "name": "gloves hard leather",
+    "description": "A pair of hard leather gloves is lying on the ground.",
+    "value": 15,
+    "type": "armor"
+  },
+  {
+    "id": 71,
+    "name": "sleeves hard leather",
+    "description": "A pair of hard leather sleeves is lying on the ground.",
+    "value": 15,
+    "type": "armor"
+  },
+  {
+    "id": 72,
+    "name": "jerkin scale mail",
+    "description": "A scale mail jerkin is lying on the ground.",
+    "value": 70,
+    "type": "armor"
+  },
+  {
+    "id": 73,
+    "name": "coif scale mail",
+    "description": "A scale mail coif is lying on the ground.",
+    "value": 40,
+    "type": "armor"
+  },
+  {
+    "id": 74,
+    "name": "skirt scale mail",
+    "description": "A long scale mail skirt is lying on the ground.",
+    "value": 50,
+    "type": "armor"
+  },
+  {
+    "id": 75,
+    "name": "boots reinforced",
+    "description": "A pair of reinforced boots lies here.",
+    "value": 25,
+    "type": "armor"
+  },
+  {
+    "id": 76,
+    "name": "gloves reinforced",
+    "description": "A pair of reinforced gloves is lying on the ground.",
+    "value": 20,
+    "type": "armor"
+  },
+  {
+    "id": 77,
+    "name": "sleeves scale mail",
+    "description": "A pair of scale mail sleeves is lying on the ground.",
+    "value": 30,
+    "type": "armor"
+  },
+  {
+    "id": 80,
+    "name": "potion heal healing",
+    "description": "A potion of healing is here.",
+    "value": 20,
+    "type": "potion"
+  },
+  {
+    "id": 81,
+    "name": "potion sanct sanctuary",
+    "description": "A potion of sanctuary is here.",
+    "value": 25,
+    "type": "potion"
+  },
+  {
+    "id": 82,
+    "name": "potion divine",
+    "description": "A potion of divine protection is here.",
+    "value": 30,
+    "type": "potion"
+  },
+  {
+    "id": 83,
+    "name": "potion cure light",
+    "description": "A potion of cure light wounds is here.",
+    "value": 15,
+    "type": "potion"
+  },
+  {
+    "id": 84,
+    "name": "potion cure serious",
+    "description": "A potion of cure serious wounds is here.",
+    "value": 25,
+    "type": "potion"
+  },
+  {
+    "id": 85,
+    "name": "potion cure critical critic",
+    "description": "A potion of cure critical wounds is here.",
+    "value": 30,
+    "type": "potion"
+  },
+  {
+    "id": 86,
+    "name": "potion antidote bottle",
+    "description": "A bottle of antidote is here.",
+    "value": 10,
+    "type": "potion"
+  },
+  {
+    "id": 87,
+    "name": "potion cure blindness",
+    "description": "A potion of cure blindness is here.",
+    "value": 20,
+    "type": "potion"
+  },
+  {
+    "id": 88,
+    "name": "vial holy water",
+    "description": "A vial of holy water is here.",
+    "value": 15,
+    "type": "potion"
+  },
+  {
+    "id": 89,
+    "name": "potion armor",
+    "description": "A potion of armor is here.",
+    "value": 20,
+    "type": "potion"
+  },
+  {
+    "id": 90,
+    "name": "potion negation",
+    "description": "A potion of negation is here.",
+    "value": 25,
+    "type": "potion"
+  },
+  {
+    "id": 91,
+    "name": "potion fly flying",
+    "description": "A potion of flying is here.",
+    "value": 30,
+    "type": "potion"
+  },
+  {
+    "id": 92,
+    "name": "potion true sight",
+    "description": "A potion of true sight is here.",
+    "value": 40,
+    "type": "potion"
+  },
+  {
+    "id": 97,
+    "name": "shield small metal",
+    "description": "A small metal shield is lying on the ground.",
+    "value": 35,
+    "type": "armor"
+  },
+  {
+    "id": 100,
+    "name": "tea cup",
+    "description": "A cup has been set here.",
+    "value": 1,
+    "type": "general"
+  },
+  {
+    "id": 101,
+    "name": "coffee cup",
+    "description": "A cup has been set here.",
+    "value": 1,
+    "type": "general"
+  },
+  {
+    "id": 102,
+    "name": "water cup",
+    "description": "A cup has been set here.",
+    "value": 1,
+    "type": "general"
+  },
+  {
+    "id": 105,
+    "name": "bracer bronze",
+    "description": "A bronze bracer is lying on the ground.",
+    "value": 20,
+    "type": "armor"
+  },
+  {
+    "id": 106,
+    "name": "bracer iron",
+    "description": "An iron bracer is lying on the ground.",
+    "value": 25,
+    "type": "armor"
+  },
+  {
+    "id": 110,
+    "name": "shirt chain mail",
+    "description": "A chain mail shirt is lying on the ground.",
+    "value": 50,
+    "type": "armor"
+  },
+  {
+    "id": 111,
+    "name": "coif chain mail",
+    "description": "A chain mail coif is lying on the ground.",
+    "value": 35,
+    "type": "armor"
+  },
+  {
+    "id": 112,
+    "name": "skirt chain mail",
+    "description": "A long chain mail skirt is lying on the ground.",
+    "value": 40,
+    "type": "armor"
+  },
+  {
+    "id": 113,
+    "name": "boots ironbound",
+    "description": "A pair of iron-bound boots lies here.",
+    "value": 30,
+    "type": "armor"
+  },
+  {
+    "id": 114,
+    "name": "gauntlets chain mail",
+    "description": "A pair of chain mail gauntlets is lying on the ground.",
+    "value": 25,
+    "type": "armor"
+  },
+  {
+    "id": 115,
+    "name": "sleeves chain mail",
+    "description": "A pair of chain mail sleeves is lying on the ground.",
+    "value": 20,
+    "type": "armor"
+  },
+  {
+    "id": 116,
+    "name": "shield large metal",
+    "description": "A large metal shield is lying on the ground.",
+    "value": 40,
+    "type": "armor"
+  },
+  {
+    "id": 117,
+    "name": "shield small wooden",
+    "description": "A small wooden shield is lying on the ground.",
+    "value": 15,
+    "type": "armor"
+  },
+  {
+    "id": 120,
+    "name": "key iron",
+    "description": "An iron key has been left here.",
+    "value": 5,
+    "type": "quest"
+  },
+  {
+    "id": 121,
+    "name": "key rusty",
+    "description": "A rusty key has been left here.",
+    "value": 3,
+    "type": "quest"
+  },
+  {
+    "id": 122,
+    "name": "key wooden",
+    "description": "A wooden key has been left here.",
+    "value": 2,
+    "type": "quest"
+  },
+  {
+    "id": 123,
+    "name": "key brass",
+    "description": "A brass key has been left here.",
+    "value": 7,
+    "type": "quest"
+  },
+  {
+    "id": 124,
+    "name": "sword long",
+    "description": "A long sword has been left here.",
+    "damage": 8,
+    "value": 40,
+    "type": "weapon"
+  },
+  {
+    "id": 129,
+    "name": "hand cuffs",
+    "description": "A pair of hand cuffs has been left here.",
+    "value": 10,
+    "type": "general"
+  },
+  {
+    "id": 130,
+    "name": "desk drawer",
+    "description": "A desk is set against the western wall.",
+    "value": 25,
+    "type": "general"
+  },
+  {
+    "id": 131,
+    "name": "safe",
+    "description": "A safe is placed in a dark corner of the room.",
+    "value": 50,
+    "type": "general"
+  },
+  {
+    "id": 132,
+    "name": "silver coins",
+    "description": "A lot of silver is here.",
+    "value": 100,
+    "type": "general"
+  },
+  {
+    "id": 133,
+    "name": "city key",
+    "description": "The very big City Key is lying here.",
+    "value": 20,
+    "type": "quest"
+  },
+  {
+    "id": 134,
+    "name": "bench",
+    "description": "A white-painted wooden bench is standing here.",
+    "value": 15,
+    "type": "general"
+  },
+  {
+    "id": 135,
+    "name": "huge rubber duck",
+    "description": "A huge green and blue spotted rubber duck with a mohawk duck sits here. Is it alive?",
+    "value": 25,
+    "type": "general"
+  },
+  {
+    "id": 136,
+    "name": "coins",
+    "description": "A small pile of coins lies here.",
+    "value": 50,
+    "type": "general"
+  },
+  {
+    "id": 137,
+    "name": "key steel",
+    "description": "A large steel key has been left here.",
+    "value": 7,
+    "type": "quest"
+  },
+  {
+    "id": 138,
+    "name": "skin water buffalo",
+    "description": "A bloated dead buffalo is on the floor.",
+    "value": 5,
+    "type": "general"
+  },
+  {
+    "id": 139,
+    "name": "letter resignation",
+    "description": "The receptionist's letter of resignation is taped to the wall.",
+    "value": 1,
+    "type": "quest"
+  },
+  {
+    "id": 140,
+    "name": "notice liquidation bank",
+    "description": "The bank's notice of liquidation is taped to the wall.",
+    "value": 1,
+    "type": "quest"
+  },
+  {
+    "id": 150,
+    "name": "coffee cup cinnamon",
+    "description": "A piping hot cup of cinnamon coffee is here.",
+    "value": 3,
+    "type": "general"
+  },
+  {
+    "id": 151,
+    "name": "soup bowl",
+    "description": "A nice hot bowl of chicken noodle soup is here.",
+    "value": 5,
+    "type": "general"
+  },
+  {
+    "id": 152,
+    "name": "bowl beef stew",
+    "description": "A bowl of nice thick beef stew, with lots of vegetables, steams here.",
+    "value": 6,
+    "type": "general"
+  },
+  {
+    "id": 153,
+    "name": "biscuit",
+    "description": "A yummy biscuit, covered with butter, is here.",
+    "value": 2,
+    "type": "general"
+  },
+  {
+    "id": 154,
+    "name": "beer bottle killian irish red",
+    "description": "A dark-tinted bottle of beer is here.",
+    "value": 7,
+    "type": "general"
+  },
+  {
+    "id": 155,
+    "name": "comfy wooden bed",
+    "description": "A comfy wooden bed is here.",
+    "value": 100,
+    "type": "general"
+  },
+  {
+    "id": 161,
+    "name": "key white",
+    "description": "A white key has been left here.",
+    "value": 5,
+    "type": "quest"
+  },
+  {
+    "id": 162,
+    "name": "map midgaard",
+    "description": "A rolled up map is here.",
+    "value": 10,
+    "type": "quest"
+  },
+  {
+    "id": 163,
+    "name": "map thera",
+    "description": "A rolled up map is here.",
+    "value": 10,
+    "type": "quest"
+  },
+  {
+    "id": 164,
+    "name": "map southern midgaard",
+    "description": "A rolled up map is here.",
+    "value": 10,
+    "type": "quest"
+  },
+  {
+    "id": 165,
+    "name": "map dwarven kingdom dwarf",
+    "description": "A rolled up map is here.",
+    "value": 10,
+    "type": "quest"
+  },
+  {
+    "id": 166,
+    "name": "map moria first",
+    "description": "A rolled up map is here.",
+    "value": 10,
+    "type": "quest"
+  },
+  {
+    "id": 167,
+    "name": "map new thalos",
+    "description": "A rolled up map is here.",
+    "value": 10,
+    "type": "quest"
+  },
+  {
+    "id": 168,
+    "name": "map olympus",
+    "description": "A rolled up map is here.",
+    "value": 10,
+    "type": "quest"
+  },
+  {
+    "id": 200,
+    "name": "juke box music",
+    "description": "A neon-lit juke box sits in the corner of the bar.",
+    "value": 200,
+    "type": "general"
+  },
+  {
+    "id": 237,
+    "name": "pit",
+    "description": "A pit for sacrifices is in front of the altar.",
+    "value": 0,
+    "type": "general"
+  },
+  {
+    "id": 238,
+    "name": "skin water buffalo",
+    "description": "A bloated dead buffalo is on the floor.",
+    "value": 5,
+    "type": "general"
+  },
+  {
+    "id": 240,
+    "name": "scroll identify",
+    "description": "A scroll has carelessly been left here.",
+    "value": 15,
+    "type": "quest"
+  },
+  {
+    "id": 241,
+    "name": "potion yellow",
+    "description": "A small yellow potion has carelessly been left here.",
+    "value": 10,
+    "type": "potion"
+  },
+  {
+    "id": 242,
+    "name": "scroll recall",
+    "description": "A scroll has carelessly been left here.",
+    "value": 15,
+    "type": "quest"
+  },
+  {
+    "id": 280,
+    "name": "potion heal healing",
+    "description": "A potion of healing is here.",
+    "value": 20,
+    "type": "potion"
+  },
+  {
+    "id": 281,
+    "name": "potion sanct sanctuary",
+    "description": "A potion of sanctuary is here.",
+    "value": 25,
+    "type": "potion"
+  },
+  {
+    "id": 282,
+    "name": "potion divine",
+    "description": "A potion of divine protection is here.",
+    "value": 30,
+    "type": "potion"
+  },
+  {
+    "id": 283,
+    "name": "potion cure light",
+    "description": "A potion of cure light wounds is here.",
+    "value": 15,
+    "type": "potion"
+  },
+  {
+    "id": 284,
+    "name": "potion cure serious",
+    "description": "A potion of cure serious wounds is here.",
+    "value": 25,
+    "type": "potion"
+  },
+  {
+    "id": 285,
+    "name": "potion cure critical critic",
+    "description": "A potion of cure critical wounds is here.",
+    "value": 30,
+    "type": "potion"
+  },
+  {
+    "id": 286,
+    "name": "potion antidote bottle",
+    "description": "A bottle of antidote is here.",
+    "value": 10,
+    "type": "potion"
+  },
+  {
+    "id": 287,
+    "name": "potion cure blindness",
+    "description": "A potion of cure blindness is here.",
+    "value": 20,
+    "type": "potion"
+  },
+  {
+    "id": 288,
+    "name": "vial holy water",
+    "description": "A vial of holy water is here.",
+    "value": 15,
+    "type": "potion"
+  },
+  {
+    "id": 289,
+    "name": "potion armor",
+    "description": "A potion of armor is here.",
+    "value": 20,
+    "type": "potion"
+  },
+  {
+    "id": 290,
+    "name": "potion negation",
+    "description": "A potion of negation is here.",
+    "value": 25,
+    "type": "potion"
+  },
+  {
+    "id": 291,
+    "name": "potion fly flying",
+    "description": "A potion of flying is here.",
+    "value": 30,
+    "type": "potion"
+  },
+  {
+    "id": 292,
+    "name": "potion true sight",
+    "description": "A potion of true sight is here.",
+    "value": 40,
+    "type": "potion"
+  },
+  {
+    "id": 349,
+    "name": "long sword",
+    "description": "A glowing long sword is here.",
+    "damage": 8,
+    "value": 60,
+    "type": "weapon"
+  },
+  {
+    "id": 350,
+    "name": "sword standard merc",
+    "description": "You see a standard issue sword here.",
+    "damage": 7,
+    "value": 40,
+    "type": "weapon"
+  },
+  {
+    "id": 351,
+    "name": "dagger standard merc",
+    "description": "You see a standard issue dagger here.",
+    "damage": 5,
+    "value": 25,
+    "type": "weapon"
+  },
+  {
+    "id": 352,
+    "name": "mace standard merc",
+    "description": "You see a standard issue mace here.",
+    "damage": 6,
+    "value": 35,
+    "type": "weapon"
+  },
+  {
+    "id": 353,
+    "name": "vest standard merc",
+    "description": "You see a standard issue vest here.",
+    "value": 30,
+    "type": "armor"
+  },
+  {
+    "id": 354,
+    "name": "shield standard merc",
+    "description": "You see a standard issue shield here.",
+    "value": 35,
+    "type": "armor"
+  },
+  {
+    "id": 355,
+    "name": "cloak standard merc",
+    "description": "You see a standard issue cloak here.",
+    "value": 20,
+    "type": "armor"
+  },
+  {
+    "id": 356,
+    "name": "helmet standard merc",
+    "description": "You see a standard issue helmet here.",
+    "value": 25,
+    "type": "armor"
+  },
+  {
+    "id": 357,
+    "name": "leggings standard merc",
+    "description": "You see a pair of standard issue leggings here.",
+    "value": 20,
+    "type": "armor"
+  },
+  {
+    "id": 358,
+    "name": "boots standard merc",
+    "description": "You see a pair of standard issue boots here.",
+    "value": 15,
+    "type": "armor"
+  },
+  {
+    "id": 359,
+    "name": "gloves standard merc",
+    "description": "You see a pair of standard issue gloves here.",
+    "value": 10,
+    "type": "armor"
+  },
+  {
+    "id": 360,
+    "name": "sleeves standard merc",
+    "description": "You see a pair of standard issue sleeves here.",
+    "value": 10,
+    "type": "armor"
+  },
+  {
+    "id": 361,
+    "name": "cape standard merc",
+    "description": "You see a standard issue cape here.",
+    "value": 15,
+    "type": "armor"
+  },
+  {
+    "id": 362,
+    "name": "belt standard merc",
+    "description": "You see a standard issue belt here.",
+    "value": 10,
+    "type": "armor"
+  },
+  {
+    "id": 363,
+    "name": "bracer standard merc",
+    "description": "You see a standard issue bracer here.",
+    "value": 10,
+    "type": "armor"
+  },
+  {
+    "id": 364,
+    "name": "ring signet",
+    "description": "You see a ring with a strange symbol on the floor.",
+    "value": 50,
+    "type": "quest"
+  },
+  {
+    "id": 365,
+    "name": "banner war merc",
+    "description": "A war banner is on the floor here.",
+    "value": 100,
+    "type": "quest"
+  },
+  {
+    "id": 371,
+    "name": "ring diamond wedding",
+    "description": "Vanya's diamond wedding ring has been left here.",
+    "value": 100,
+    "type": "quest"
+  },
+  {
+    "id": 372,
+    "name": "band gold wedding",
+    "description": "House's gold wedding band has been left here.",
+    "value": 80,
+    "type": "quest"
+  },
+  {
+    "id": 373,
+    "name": "pearl",
+    "description": "A small but well-formed pearl lies here.",
+    "value": 50,
+    "type": "general"
+  },
+  {
+    "id": 374,
+    "name": "garnet gem",
+    "description": "A garnet catches your eye.",
+    "value": 40,
+    "type": "general"
+  },
+  {
+    "id": 375,
+    "name": "emerald gem",
+    "description": "A deep green emerald winks at you.",
+    "value": 60,
+    "type": "general"
+  },
+  {
+    "id": 376,
+    "name": "ruby gem",
+    "description": "A beautiful, if small, ruby is here.",
+    "value": 70,
+    "type": "general"
+  },
+  {
+    "id": 377,
+    "name": "diamond gem",
+    "description": "A diamond catches and reflects the lighting.",
+    "value": 100,
+    "type": "general"
+  },
+  {
+    "id": 378,
+    "name": "opal",
+    "description": "A lustrous opal reminds you of far-off places.",
+    "value": 50,
+    "type": "general"
+  },
+  {
+    "id": 1009,
+    "name": "Sword of Power",
+    "description": "A powerful sword with high damage.",
+    "damage": 12,
+    "value": 1153,
+    "type": "weapon"
+  },
+  {
+    "id": 1013,
+    "name": "Axe of Fury",
+    "description": "An axe imbued with furious power.",
+    "damage": 96,
+    "value": 10229,
+    "type": "weapon"
+  },
+  {
+    "id": 1019,
+    "name": "Bow of Accuracy",
+    "description": "A bow known for its precision.",
+    "damage": 21,
+    "value": 1460,
+    "type": "weapon"
+  },
+  {
+    "id": 1021,
+    "name": "Dagger of Speed",
+    "description": "A swift and deadly dagger.",
+    "damage": 63,
+    "value": 4990,
+    "type": "weapon"
+  },
+  {
+    "id": 1031,
+    "name": "Hammer of Destruction",
+    "description": "A hammer that can crush anything.",
+    "damage": 72,
+    "value": 6215,
+    "type": "weapon"
+  },
+  {
+    "id": 1033,
+    "name": "Spear of Precision",
+    "description": "A spear known for its accuracy.",
+    "damage": 114,
+    "value": 14029,
+    "type": "weapon"
+  },
+  {
+    "id": 1039,
+    "name": "Mace of Brutality",
+    "description": "A brutal mace with high damage.",
+    "damage": 39,
+    "value": 2560,
+    "type": "weapon"
+  },
+  {
+    "id": 1049,
+    "name": "Crossbow of Precision",
+    "description": "A crossbow with excellent precision.",
+    "damage": 48,
+    "value": 3353,
+    "type": "weapon"
+  },
+  {
+    "id": 1051,
+    "name": "Lance of Nobility",
+    "description": "A lance fit for a noble warrior.",
+    "damage": 90,
+    "value": 9151,
+    "type": "weapon"
+  },
+  {
+    "id": 1061,
+    "name": "Club of Strength",
+    "description": "A club that grants immense strength.",
+    "damage": 99,
+    "value": 10862,
+    "type": "weapon"
+  },
+  {
+    "id": 1063,
+    "name": "Knife of Quickness",
+    "description": "A quick and deadly knife.",
+    "damage": 141,
+    "value": 20944,
+    "type": "weapon"
+  },
+  {
+    "id": 1069,
+    "name": "Scythe of the Reaper",
+    "description": "A scythe that reaps souls.",
+    "damage": 67,
+    "value": 5558,
+    "type": "weapon"
+  },
+  {
+    "id": 1087,
+    "name": "Halberd of Balance",
+    "description": "A balanced and deadly halberd.",
+    "damage": 43,
+    "value": 2936,
+    "type": "weapon"
+  },
+  {
+    "id": 1091,
+    "name": "Flail of Chaos",
+    "description": "A chaotic flail with high damage.",
+    "damage": 127,
+    "value": 17220,
+    "type": "weapon"
+  },
+  {
+    "id": 1093,
+    "name": "Whip of Agility",
+    "description": "A whip that grants agility.",
+    "damage": 169,
+    "value": 29654,
+    "type": "weapon"
+  },
+  {
+    "id": 1097,
+    "name": "Katana of Honor",
+    "description": "A katana that embodies honor.",
+    "damage": 52,
+    "value": 3801,
+    "type": "weapon"
+  },
+  {
+    "id": 1099,
+    "name": "Rapier of Grace",
+    "description": "A graceful and deadly rapier.",
+    "damage": 94,
+    "value": 9935,
+    "type": "weapon"
+  },
+  {
+    "id": 1103,
+    "name": "Warhammer of Might",
+    "description": "A mighty warhammer.",
+    "damage": 178,
+    "value": 32787,
+    "type": "weapon"
+  },
+  {
+    "id": 1109,
+    "name": "Trident of the Seas",
+    "description": "A trident that controls the seas.",
+    "damage": 103,
+    "value": 11718,
+    "type": "weapon"
+  },
+  {
+    "id": 1117,
+    "name": "Morning Star of Light",
+    "description": "A morning star that radiates light.",
+    "damage": 71,
+    "value": 6158,
+    "type": "weapon"
+  },
+  {
+    "id": 1123,
+    "name": "Scimitar of the Desert",
+    "description": "A scimitar forged in the desert.",
+    "damage": 196,
+    "value": 39539,
+    "type": "weapon"
+  },
+  {
+    "id": 1129,
+    "name": "Battleaxe of the North",
+    "description": "A battleaxe from the northern lands.",
+    "damage": 122,
+    "value": 16013,
+    "type": "weapon"
+  },
+  {
+    "id": 1151,
+    "name": "Longbow of the Forest",
+    "description": "A longbow crafted in the forest.",
+    "damage": 182,
+    "value": 34275,
+    "type": "weapon"
+  },
+  {
+    "id": 1153,
+    "name": "Throwing Axe of the Hunter",
+    "description": "A throwing axe used by hunters.",
+    "damage": 24,
+    "value": 1729,
+    "type": "weapon"
+  },
+  {
+    "id": 1163,
+    "name": "Short Sword of the Knight",
+    "description": "A short sword carried by knights.",
+    "damage": 33,
+    "value": 2252,
+    "type": "weapon"
+  },
+  {
+    "id": 1171,
+    "name": "Heavy Club of the Ogre",
+    "description": "A heavy club wielded by ogres.",
+    "damage": 200,
+    "value": 41171,
+    "type": "weapon"
+  },
+  {
+    "id": 1181,
+    "name": "Poison Dagger of the Assassin",
+    "description": "A dagger used by assassins, coated with poison.",
+    "damage": 209,
+    "value": 44862,
+    "type": "weapon"
+  },
+  {
+    "id": 1187,
+    "name": "Magic Staff of the Wizard",
+    "description": "A staff used by powerful wizards.",
+    "damage": 135,
+    "value": 19412,
+    "type": "weapon"
+  },
+  {
+    "id": 1193,
+    "name": "Crystal Sword of the Mage",
+    "description": "A crystal sword wielded by mages.",
+    "damage": 60,
+    "value": 4793,
+    "type": "weapon"
+  },
+  {
+    "id": 1201,
+    "name": "Golden Axe of the Dwarf",
+    "description": "A golden axe used by dwarves.",
+    "damage": 27,
+    "value": 1930,
+    "type": "weapon"
+  },
+  {
+    "id": 1213,
+    "name": "Elven Bow of the Ranger",
+    "description": "A bow used by elven rangers.",
+    "damage": 78,
+    "value": 7297,
+    "type": "weapon"
+  },
+  {
+    "id": 1217,
+    "name": "Orcish Mace of the Warrior",
+    "description": "A mace wielded by orcish warriors.",
+    "damage": 162,
+    "value": 27461,
+    "type": "weapon"
+  },
+  {
+    "id": 1223,
+    "name": "Silver Lance of the Paladin",
+    "description": "A silver lance carried by paladins.",
+    "damage": 88,
+    "value": 8967,
+    "type": "weapon"
+  },
+  {
+    "id": 1229,
+    "name": "Bronze Sword of the Soldier",
+    "description": "A bronze sword used by soldiers.",
+    "damage": 13,
+    "value": 1398,
+    "type": "weapon"
+  },
+  {
+    "id": 1231,
+    "name": "Enchanted Hammer of the Blacksmith",
+    "description": "An enchanted hammer used by blacksmiths.",
+    "damage": 55,
+    "value": 4256,
+    "type": "weapon"
+  },
+  {
+    "id": 1237,
+    "name": "Holy Spear of the Cleric",
+    "description": "A spear blessed by clerics.",
+    "damage": 180,
+    "value": 33637,
+    "type": "weapon"
+  },
+  {
+    "id": 1241,
+    "name": "Shadow Knife of the Thief",
+    "description": "A knife used by shadowy thieves.",
+    "damage": 64,
+    "value": 5337,
+    "type": "weapon"
+  },
+  {
+    "id": 1249,
+    "name": "Frost Scythe of the Ice Mage",
+    "description": "A scythe that can freeze enemies.",
+    "damage": 31,
+    "value": 2210,
+    "type": "weapon"
+  },
+  {
+    "id": 1259,
+    "name": "Inferno Halberd of the Fire Lord",
+    "description": "A halberd engulfed in flames.",
+    "damage": 40,
+    "value": 2859,
+    "type": "weapon"
+  },
+  {
+    "id": 1277,
+    "name": "Storm Flail of the Thunder God",
+    "description": "A flail that strikes with thunder.",
+    "damage": 17,
+    "value": 1566,
+    "type": "weapon"
+  },
+  {
+    "id": 1279,
+    "name": "Ethereal Whip of the Ghost",
+    "description": "A whip that can pass through objects.",
+    "damage": 59,
+    "value": 4760,
+    "type": "weapon"
+  },
+  {
+    "id": 1283,
+    "name": "Samurai Katana of the Samurai",
+    "description": "A katana wielded by samurais.",
+    "damage": 142,
+    "value": 21447,
+    "type": "weapon"
+  },
+  {
+    "id": 1291,
+    "name": "Ninja Sword of the Ninja",
+    "description": "A sword used by ninjas.",
+    "damage": 110,
+    "value": 13391,
+    "type": "weapon"
+  },
+  {
+    "id": 1297,
+    "name": "Gladiator Trident of the Arena",
+    "description": "A trident used in gladiator arenas.",
+    "damage": 35,
+    "value": 2522,
+    "type": "weapon"
+  },
+  {
+    "id": 1301,
+    "name": "Viking Axe of the Raider",
+    "description": "An axe wielded by Viking raiders.",
+    "damage": 119,
+    "value": 15462,
+    "type": "weapon"
+  },
+  {
+    "id": 1303,
+    "name": "Rogue Rapier of the Duelist",
+    "description": "A rapier used by rogue duelists.",
+    "damage": 161,
+    "value": 27224,
+    "type": "weapon"
+  },
+  {
+    "id": 1307,
+    "name": "Paladin Mace of the Crusader",
+    "description": "A mace wielded by crusading paladins.",
+    "damage": 44,
+    "value": 3243,
+    "type": "weapon"
+  },
+  {
+    "id": 1319,
+    "name": "Knight Sword of the Round Table",
+    "description": "A sword used by knights of the Round Table.",
+    "damage": 95,
+    "value": 10344,
+    "type": "weapon"
+  },
+  {
+    "id": 1321,
+    "name": "Amazon Bow of the Archer",
+    "description": "A bow used by Amazon archers.",
+    "damage": 137,
+    "value": 20090,
+    "type": "weapon"
+  },
+  {
+    "id": 1327,
+    "name": "Spartan Spear of the Phalanx",
+    "description": "A spear used by Spartan soldiers.",
+    "damage": 63,
+    "value": 5296,
+    "type": "weapon"
+  },
+  {
+    "id": 1361,
+    "name": "Barbarian Club of the Warlord",
+    "description": "A club used by barbarian warlords.",
+    "damage": 174,
+    "value": 31637,
+    "type": "weapon"
+  },
+  {
+    "id": 1367,
+    "name": "Elf Dagger of the Shadow",
+    "description": "A dagger used by elf shadows.",
+    "damage": 99,
+    "value": 11168,
+    "type": "weapon"
+  },
+  {
+    "id": 1373,
+    "name": "Excalibur",
+    "description": "The legendary sword of King Arthur.",
+    "damage": 300,
+    "value": 91373,
+    "type": "weapon"
+  },
+  {
+    "id": 1381,
+    "name": "Mjolnir",
+    "description": "The magical hammer wielded by Thor.",
+    "damage": 999,
+    "value": 999382,
+    "type": "weapon"
+  },
+  {
+    "id": 1399,
+    "name": "Lightsaber",
+    "description": "The weapon of Jedi Knights in Star Wars.",
+    "damage": 420,
+    "value": 177799,
+    "type": "weapon"
+  },
+  {
+    "id": 1409,
+    "name": "Glamdring",
+    "description": "The sword of Gandalf in The Lord of the Rings.",
+    "damage": 250,
+    "value": 63909,
+    "type": "weapon"
+  },
+  {
+    "id": 1423,
+    "name": "Master Sword",
+    "description": "The legendary sword from The Legend of Zelda.",
+    "damage": 350,
+    "value": 123923,
+    "type": "weapon"
+  },
+  {
+    "id": 1427,
+    "name": "Buster Sword",
+    "description": "The iconic sword wielded by Cloud Strife in Final Fantasy VII.",
+    "damage": 400,
+    "value": 161427,
+    "type": "weapon"
+  },
+  {
+    "id": 1429,
+    "name": "Dragon Slayer",
+    "description": "The massive sword from Berserk.",
+    "damage": 450,
+    "value": 203929,
+    "type": "weapon"
+  },
+  {
+    "id": 1433,
+    "name": "Ebony Blade",
+    "description": "A powerful sword from the Elder Scrolls series.",
+    "damage": 280,
+    "value": 79833,
+    "type": "weapon"
+  },
+  {
+    "id": 1439,
+    "name": "Keyblade",
+    "description": "The weapon wielded by Sora in Kingdom Hearts.",
+    "damage": 310,
+    "value": 97539,
+    "type": "weapon"
+  },
+  {
+    "id": 1447,
+    "name": "Vorpal Sword",
+    "description": "A sword with magical properties from various works of fiction.",
+    "damage": 260,
+    "value": 69047,
+    "type": "weapon"
+  },
+  {
+    "id": 1451,
+    "name": "Soul Reaver",
+    "description": "The ancient sword from the Legacy of Kain series.",
+    "damage": 330,
+    "value": 110351,
+    "type": "weapon"
+  },
+  {
+    "id": 1453,
+    "name": "Sword of Omens",
+    "description": "The legendary sword from Thundercats.",
+    "damage": 290,
+    "value": 85553,
+    "type": "weapon"
+  },
+  {
+    "id": 1459,
+    "name": "Frostmourne",
+    "description": "The cursed sword wielded by the Lich King in World of Warcraft.",
+    "damage": 410,
+    "value": 169559,
+    "type": "weapon"
+  },
+  {
+    "id": 1471,
+    "name": "Hellfire Sword",
+    "description": "A fiery blade with immense power.",
+    "damage": 370,
+    "value": 138371,
+    "type": "weapon"
+  },
+  {
+    "id": 1481,
+    "name": "Doomhammer",
+    "description": "The powerful warhammer from Warcraft.",
+    "damage": 450,
+    "value": 203981,
+    "type": "weapon"
+  },
+  {
+    "id": 1483,
+    "name": "Leviathan Axe",
+    "description": "The magical axe wielded by Kratos in God of War.",
+    "damage": 400,
+    "value": 161483,
+    "type": "weapon"
+  },
+  {
+    "id": 1487,
+    "name": "Spear of Destiny",
+    "description": "The legendary spear that pierced the side of Jesus.",
+    "damage": 380,
+    "value": 145887,
+    "type": "weapon"
+  },
+  {
+    "id": 1489,
+    "name": "Blade of Chaos",
+    "description": "The chained blades wielded by Kratos in God of War.",
+    "damage": 340,
+    "value": 117089,
+    "type": "weapon"
+  },
+  {
+    "id": 1493,
+    "name": "Lich King's Sword",
+    "description": "Another name for Frostmourne, wielded by the Lich King.",
+    "damage": 410,
+    "value": 169593,
+    "type": "weapon"
+  },
+  {
+    "id": 1499,
+    "name": "Dark Saber",
+    "description": "A unique black-bladed lightsaber from Star Wars.",
+    "damage": 370,
+    "value": 138399,
+    "type": "weapon"
+  },
+  {
+    "id": 1511,
+    "name": "Elucidator",
+    "description": "The primary sword used by Kirito in Sword Art Online.",
+    "damage": 340,
+    "value": 117111,
+    "type": "weapon"
+  },
+  {
+    "id": 1523,
+    "name": "Andúril",
+    "description": "The reforged Narsil, wielded by Aragorn in The Lord of the Rings.",
+    "damage": 380,
+    "value": 145923,
+    "type": "weapon"
+  },
+  {
+    "id": 1531,
+    "name": "Heaven's Blade",
+    "description": "A divine sword with immense power.",
+    "damage": 420,
+    "value": 177931,
+    "type": "weapon"
+  },
+  {
+    "id": 1543,
+    "name": "Chaos Blade",
+    "description": "A cursed blade that brings chaos to its wielder.",
+    "damage": 320,
+    "value": 103943,
+    "type": "weapon"
+  },
+  {
+    "id": 1549,
+    "name": "Nightmare Sword",
+    "description": "A sword that brings nightmares to its foes.",
+    "damage": 300,
+    "value": 91549,
+    "type": "weapon"
+  },
+  {
+    "id": 1553,
+    "name": "Oathkeeper",
+    "description": "A sword from Game of Thrones, given to Brienne of Tarth.",
+    "damage": 310,
+    "value": 97653,
+    "type": "weapon"
+  },
+  {
+    "id": 1559,
+    "name": "Rebellion",
+    "description": "Dante's sword from the Devil May Cry series.",
+    "damage": 340,
+    "value": 117159,
+    "type": "weapon"
+  },
+  {
+    "id": 1567,
+    "name": "Masamune",
+    "description": "The legendary katana wielded by Sephiroth in Final Fantasy VII.",
+    "damage": 390,
+    "value": 153667,
+    "type": "weapon"
+  },
+  {
+    "id": 1571,
+    "name": "Gungnir",
+    "description": "The spear of Odin in Norse mythology.",
+    "damage": 350,
+    "value": 124071,
+    "type": "weapon"
+  },
+  {
+    "id": 1579,
+    "name": "Blade of Olympus",
+    "description": "A powerful sword from God of War, used by Kratos.",
+    "damage": 400,
+    "value": 161579,
+    "type": "weapon"
+  },
+  {
+    "id": 1583,
+    "name": "Muramasa",
+    "description": "A cursed katana with immense power.",
+    "damage": 370,
+    "value": 138483,
+    "type": "weapon"
+  },
+  {
+    "id": 1597,
+    "name": "Ashbringer",
+    "description": "A holy sword from World of Warcraft.",
+    "damage": 410,
+    "value": 169697,
+    "type": "weapon"
+  },
+  {
+    "id": 1601,
+    "name": "Bloodscythe",
+    "description": "A powerful scythe that drains the life of its victims.",
+    "damage": 360,
+    "value": 131201,
+    "type": "weapon"
+  },
+  {
+    "id": 1607,
+    "name": "Caliburn",
+    "description": "Another name for Excalibur, the legendary sword of King Arthur.",
+    "damage": 300,
+    "value": 91607,
+    "type": "weapon"
+  },
+  {
+    "id": 1609,
+    "name": "Durandal",
+    "description": "The legendary sword of the paladin Roland.",
+    "damage": 350,
+    "value": 124109,
+    "type": "weapon"
+  },
+  {
+    "id": 1613,
+    "name": "Dragonfang",
+    "description": "A sword said to be forged from the fang of a dragon.",
+    "damage": 380,
+    "value": 146013,
+    "type": "weapon"
+  },
+  {
+    "id": 1619,
+    "name": "Stormbreaker",
+    "description": "A powerful axe wielded by Thor.",
+    "damage": 999,
+    "value": 999620,
+    "type": "weapon"
+  },
+  {
+    "id": 1621,
+    "name": "Tyrfing",
+    "description": "A cursed sword from Norse mythology.",
+    "damage": 370,
+    "value": 138521,
+    "type": "weapon"
+  },
+  {
+    "id": 1627,
+    "name": "Balmung",
+    "description": "The sword of Siegfried from the Nibelungenlied.",
+    "damage": 360,
+    "value": 131227,
+    "type": "weapon"
+  },
+  {
+    "id": 1637,
+    "name": "Brisingr",
+    "description": "The magical sword from the Inheritance Cycle.",
+    "damage": 350,
+    "value": 124137,
+    "type": "weapon"
+  },
+  {
+    "id": 1657,
+    "name": "Twilight Sword",
+    "description": "A sword that harnesses the power of twilight.",
+    "damage": 340,
+    "value": 117257,
+    "type": "weapon"
+  },
+  {
+    "id": 1663,
+    "name": "Heaven's Sword",
+    "description": "A divine sword with celestial power.",
+    "damage": 420,
+    "value": 178063,
+    "type": "weapon"
+  },
+  {
+    "id": 1667,
+    "name": "Shadow Blade",
+    "description": "A sword that melds into the shadows.",
+    "damage": 320,
+    "value": 104067,
+    "type": "weapon"
+  },
+  {
+    "id": 1669,
+    "name": "Divine Rapier",
+    "description": "An incredibly powerful rapier from Dota 2.",
+    "damage": 450,
+    "value": 204169,
+    "type": "weapon"
+  },
+  {
+    "id": 1693,
+    "name": "Thunderfury",
+    "description": "Blessed blade of the windseeker from World of Warcraft.",
+    "damage": 400,
+    "value": 161693,
+    "type": "weapon"
+  },
+  {
+    "id": 1697,
+    "name": "Crimson Sword",
+    "description": "A sword with a blade that glows crimson.",
+    "damage": 320,
+    "value": 104097,
+    "type": "weapon"
+  }
+]

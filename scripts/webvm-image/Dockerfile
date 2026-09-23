@@ -1,21 +1,3 @@
-# The CSE240 PokéMUD, compiled for the guest's own i386 userland. Separate
-# stage so the ~200MB toolchain never reaches the shipped image.
-FROM alpine:3.19 AS pokemud
-RUN apk add --no-cache g++
-COPY pokemud/ /src/
-WORKDIR /src
-# One g++ over every source instead of the course Makefile: the Makefile links
-# pokemud/gym.o, a prebuilt x86-64 object that cannot go in a 32-bit guest, so
-# gym_stub.cpp replaces it (see that file).
-#
-# Dynamically linked on purpose. -static here yields a static-PIE (Alpine's gcc
-# defaults to -pie) and CheerpX faults the instant it is exec'd, before main()
-# runs: "Fault addr 5555501c", a relocation address. The ordinary dynamic
-# binary is the shape CheerpX actually runs, so the image carries libstdc++
-# instead. No -g: debug info is dead weight in a download every visitor makes.
-RUN g++ -Wall -std=c++17 -o pokemud.bin *.cpp pokemud/*.cpp \
-    && strip pokemud.bin
-
 FROM alpine:3.19
 
 RUN apk add --no-cache bash coreutils less nano figlet libstdc++ \
@@ -45,9 +27,14 @@ RUN chmod +x /usr/local/bin/banner /usr/local/bin/about /usr/local/bin/projects 
     && chmod 644 /home/user/scratch/*
 
 # PokéMUD: on $PATH but absent from `help`, so it rewards poking around.
-COPY --from=pokemud /src/pokemud.bin /usr/local/share/pokemud/pokemud.bin
-COPY --from=pokemud /src/rooms.json /src/items.json /src/pokemon.json \
-      /src/moves.json /src/team.json /usr/local/share/pokemud/
+# The binary is committed prebuilt: the source is still live CSE240 coursework
+# and must not be published. Rebuild (source stays local, gitignored) with:
+#   docker run --rm --platform linux/i386 -v "$PWD/pokemud:/src" -w /src alpine:3.19 \
+#     sh -c 'apk add g++ && g++ -Wall -std=c++17 -o pokemud.bin *.cpp pokemud/*.cpp && strip pokemud.bin'
+# Same alpine:3.19 as below, so it links the libstdc++ this image ships. Keep it
+# dynamic: -static gives a static-PIE that CheerpX faults on before main().
+COPY pokemud/pokemud.bin pokemud/rooms.json pokemud/items.json pokemud/pokemon.json \
+      pokemud/moves.json pokemud/team.json /usr/local/share/pokemud/
 COPY pokemud/pokemud.sh /usr/local/bin/pokemud
 # The JSON arrived from the course box mode 755; it is data, not programs.
 RUN chmod +x /usr/local/bin/pokemud \

@@ -51,7 +51,9 @@ sleep 1
   "http://localhost:$PORT/vmtest.html" >/dev/null 2>&1 &
 CHROME_PID=$!
 
-for _ in $(seq 1 200); do
+# 60 was enough before the guest ran a real program. PokéMUD's first launch
+# pages ~100KB of JSON in over range requests, cold, which alone costs ~45s.
+for _ in $(seq 1 120); do
   [ -s "$RESULT" ] && break
   sleep 2
 done
