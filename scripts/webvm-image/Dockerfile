@@ -6,15 +6,19 @@ COPY pokemud/ /src/
 WORKDIR /src
 # One g++ over every source instead of the course Makefile: the Makefile links
 # pokemud/gym.o, a prebuilt x86-64 object that cannot go in a 32-bit guest, so
-# gym_stub.cpp replaces it (see that file). -static so the shipped image needs
-# no libstdc++ at all, and no -g: debug info is dead weight in a download every
-# visitor pays for.
-RUN g++ -Wall -std=c++17 -static -o pokemud.bin *.cpp pokemud/*.cpp \
+# gym_stub.cpp replaces it (see that file).
+#
+# Dynamically linked on purpose. -static here yields a static-PIE (Alpine's gcc
+# defaults to -pie) and CheerpX faults the instant it is exec'd, before main()
+# runs: "Fault addr 5555501c", a relocation address. The ordinary dynamic
+# binary is the shape CheerpX actually runs, so the image carries libstdc++
+# instead. No -g: debug info is dead weight in a download every visitor makes.
+RUN g++ -Wall -std=c++17 -o pokemud.bin *.cpp pokemud/*.cpp \
     && strip pokemud.bin
 
 FROM alpine:3.19
 
-RUN apk add --no-cache bash coreutils less nano figlet \
+RUN apk add --no-cache bash coreutils less nano figlet libstdc++ \
     && adduser -D -s /bin/bash user \
     && echo 'user:user' | chpasswd \
     && mkdir -p /home/user \

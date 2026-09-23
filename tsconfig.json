@@ -13,6 +13,8 @@
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
+    /* import.meta.glob, used to load content/*.md */
+    "types": ["vite/client"],
     "isolatedModules": true,
     "noEmit": true,
     /* Linting */

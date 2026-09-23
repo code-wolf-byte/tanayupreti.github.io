@@ -249,6 +249,84 @@
   color: var(--text-dim);
 }
 
+/* The rendered writeup. Only the tags renderMarkdown emits can land here, so
+   this list is the complete set rather than a defensive sweep. */
+.sdn-writeup {
+  font-size: 13px;
+  line-height: 1.65;
+  color: var(--text-dim);
+  max-width: 54ch;
+}
+
+.sdn-writeup > :first-child {
+  margin-top: 0;
+}
+
+.sdn-writeup > :last-child {
+  margin-bottom: 0;
+}
+
+.sdn-writeup p,
+.sdn-writeup ul,
+.sdn-writeup ol,
+.sdn-writeup blockquote {
+  margin: 0 0 10px;
+}
+
+.sdn-writeup ul,
+.sdn-writeup ol {
+  padding-left: 18px;
+}
+
+.sdn-writeup h1,
+.sdn-writeup h2,
+.sdn-writeup h3,
+.sdn-writeup h4,
+.sdn-writeup h5,
+.sdn-writeup h6 {
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text);
+  margin: 16px 0 8px;
+}
+
+.sdn-writeup a {
+  color: var(--accent);
+}
+
+.sdn-writeup code {
+  font-size: 12px;
+  padding: 1px 4px;
+  border-radius: 2px;
+  border: 1px solid var(--line);
+}
+
+.sdn-writeup pre {
+  margin: 0 0 10px;
+  padding: 10px 12px;
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+}
+
+/* The border and padding belong to the <pre>; doubling them on the inner
+   <code> would draw a box inside a box. */
+.sdn-writeup pre code {
+  border: 0;
+  padding: 0;
+}
+
+.sdn-writeup blockquote {
+  padding-left: 12px;
+  border-left: 2px solid var(--line);
+}
+
+.sdn-writeup img {
+  max-width: 100%;
+}
+
 .sdn-open {
   display: inline-block;
   margin-top: 24px;

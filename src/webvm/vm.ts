@@ -13,7 +13,7 @@ const DISK_IMAGE_URL = '/webvm/alpine.ext2';
 // alpine.ext2 shifts the blocks underneath it, so bump this suffix whenever the
 // image is rebuilt — otherwise returning visitors keep a stale overlay over a
 // new base and see the old filesystem (or a corrupted mix).
-const OVERLAY_STORE_NAME = 'webvm-alpine-overlay-7';
+const OVERLAY_STORE_NAME = 'webvm-alpine-overlay-8';
 const RPC_STORE_NAME = 'webvm-rpc';
 
 // Paths as the guest sees them; the device-relative twin is the same minus the mount point.
