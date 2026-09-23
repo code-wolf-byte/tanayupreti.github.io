@@ -1,0 +1,317 @@
+[
+    {
+        "move_name": "Absorb",
+        "move_type": "Grass",
+        "category": "Special",
+        "power": 30,
+        "accuracy": 100,
+        "pp": 25,
+        "id": 1
+    },
+    {
+        "move_name": "Body Slam",
+        "move_type": "Normal",
+        "category": "Physical",
+        "power": 85,
+        "accuracy": 100,
+        "pp": 15,
+        "id": 4
+    },
+    {
+        "move_name": "Bubble",
+        "move_type": "Water",
+        "category": "Special",
+        "power": 40,
+        "accuracy": 100,
+        "pp": 30,
+        "id": 5
+    },
+    {
+        "move_name": "Bubble Beam",
+        "move_type": "Water",
+        "category": "Special",
+        "power": 65,
+        "accuracy": 100,
+        "pp": 20,
+        "id": 6
+    },
+    {
+        "move_name": "Clamp",
+        "move_type": "Water",
+        "category": "Physical",
+        "power": 35,
+        "accuracy": 85,
+        "pp": 15,
+        "id": 7
+    },
+    {
+        "move_name": "Crabhammer",
+        "move_type": "Water",
+        "category": "Physical",
+        "power": 100,
+        "accuracy": 90,
+        "pp": 10,
+        "id": 9
+    },
+    {
+        "move_name": "Double-Edge",
+        "move_type": "Normal",
+        "category": "Physical",
+        "power": 120,
+        "accuracy": 100,
+        "pp": 15,
+        "id": 13
+    },
+    {
+        "move_name": "Ember",
+        "move_type": "Fire",
+        "category": "Special",
+        "power": 40,
+        "accuracy": 100,
+        "pp": 25,
+        "id": 15
+    },
+    {
+        "move_name": "Fire Blast",
+        "move_type": "Fire",
+        "category": "Special",
+        "power": 110,
+        "accuracy": 85,
+        "pp": 5,
+        "id": 17
+    },
+    {
+        "move_name": "Fire Punch",
+        "move_type": "Fire",
+        "category": "Physical",
+        "power": 75,
+        "accuracy": 100,
+        "pp": 15,
+        "id": 18
+    },
+    {
+        "move_name": "Fire Spin",
+        "move_type": "Fire",
+        "category": "Special",
+        "power": 35,
+        "accuracy": 85,
+        "pp": 15,
+        "id": 19
+    },
+    {
+        "move_name": "Flamethrower",
+        "move_type": "Fire",
+        "category": "Special",
+        "power": 90,
+        "accuracy": 100,
+        "pp": 15,
+        "id": 20
+    },
+    {
+        "move_name": "Hydro Pump",
+        "move_type": "Water",
+        "category": "Special",
+        "power": 110,
+        "accuracy": 80,
+        "pp": 5,
+        "id": 23
+    },
+    {
+        "move_name": "Hyper Fang",
+        "move_type": "Normal",
+        "category": "Physical",
+        "power": 80,
+        "accuracy": 90,
+        "pp": 15,
+        "id": 25
+    },
+    {
+        "move_name": "Mega Drain",
+        "move_type": "Grass",
+        "category": "Special",
+        "power": 40,
+        "accuracy": 100,
+        "pp": 15,
+        "id": 26
+    },
+    {
+        "move_name": "Mega Kick",
+        "move_type": "Normal",
+        "category": "Physical",
+        "power": 120,
+        "accuracy": 75,
+        "pp": 5,
+        "id": 27
+    },
+    {
+        "move_name": "Petal Dance",
+        "move_type": "Grass",
+        "category": "Special",
+        "power": 120,
+        "accuracy": 100,
+        "pp": 10,
+        "id": 30
+    },
+    {
+        "move_name": "Quick Attack",
+        "move_type": "Normal",
+        "category": "Physical",
+        "power": 50,
+        "accuracy": 100,
+        "pp": 30,
+        "id": 32
+    },
+    {
+        "move_name": "Razor Leaf",
+        "move_type": "Grass",
+        "category": "Physical",
+        "power": 55,
+        "accuracy": 95,
+        "pp": 25,
+        "id": 34
+    },
+    {
+        "move_name": "Rock Slide",
+        "move_type": "Rock",
+        "category": "Physical",
+        "power": 75,
+        "accuracy": 90,
+        "pp": 10,
+        "id": 36
+    },
+    {
+        "move_name": "Rock Throw",
+        "move_type": "Rock",
+        "category": "Physical",
+        "power": 50,
+        "accuracy": 90,
+        "pp": 15,
+        "id": 37
+    },
+    {
+        "move_name": "Scratch",
+        "move_type": "Normal",
+        "category": "Physical",
+        "power": 40,
+        "accuracy": 100,
+        "pp": 35,
+        "id": 38
+    },
+    {
+        "move_name": "Slash",
+        "move_type": "Normal",
+        "category": "Physical",
+        "power": 70,
+        "accuracy": 100,
+        "pp": 20,
+        "id": 42
+    },
+    {
+        "move_name": "Solar Beam",
+        "move_type": "Grass",
+        "category": "Special",
+        "power": 120,
+        "accuracy": 100,
+        "pp": 10,
+        "id": 43
+    },
+    {
+        "move_name": "Strength",
+        "move_type": "Normal",
+        "category": "Physical",
+        "power": 80,
+        "accuracy": 100,
+        "pp": 15,
+        "id": 46
+    },
+    {
+        "move_name": "Surf",
+        "move_type": "Water",
+        "category": "Special",
+        "power": 90,
+        "accuracy": 100,
+        "pp": 15,
+        "id": 47
+    },
+    {
+        "move_name": "Take Down",
+        "move_type": "Normal",
+        "category": "Physical",
+        "power": 90,
+        "accuracy": 85,
+        "pp": 20,
+        "id": 50
+    },
+    {
+        "move_name": "Thunder",
+        "move_type": "Electric",
+        "category": "Special",
+        "power": 110,
+        "accuracy": 70,
+        "pp": 10,
+        "id": 52
+    },
+    {
+        "move_name": "Thunder Punch",
+        "move_type": "Electric",
+        "category": "Physical",
+        "power": 75,
+        "accuracy": 100,
+        "pp": 15,
+        "id": 53
+    },
+    {
+        "move_name": "Thunder Shock",
+        "move_type": "Electric",
+        "category": "Special",
+        "power": 40,
+        "accuracy": 100,
+        "pp": 30,
+        "id": 54
+    },
+    {
+        "move_name": "Thunderbolt",
+        "move_type": "Electric",
+        "category": "Special",
+        "power": 90,
+        "accuracy": 100,
+        "pp": 15,
+        "id": 55
+    },
+    {
+        "move_name": "Tri Attack",
+        "move_type": "Normal",
+        "category": "Special",
+        "power": 80,
+        "accuracy": 100,
+        "pp": 10,
+        "id": 56
+    },
+    {
+        "move_name": "Vine Whip",
+        "move_type": "Grass",
+        "category": "Physical",
+        "power": 45,
+        "accuracy": 100,
+        "pp": 25,
+        "id": 57
+    },
+    {
+        "move_name": "Water Gun",
+        "move_type": "Water",
+        "category": "Special",
+        "power": 40,
+        "accuracy": 100,
+        "pp": 25,
+        "id": 59
+    },
+    {
+        "move_name": "Waterfall",
+        "move_type": "Water",
+        "category": "Physical",
+        "power": 80,
+        "accuracy": 100,
+        "pp": 15,
+        "id": 60
+    }
+]

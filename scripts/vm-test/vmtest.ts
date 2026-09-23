@@ -130,26 +130,33 @@ try {
   // The lane must survive a failed RPC.
   assert('lane_survives_failure', (await exec('echo still alive')).trim() === 'still alive');
 
-  // PokéMUD: the easter egg only works if the i386 binary actually runs in the
-  // guest and its launcher can write a save into the one writable directory.
-  // Piping input is the whole game loop end to end — it loads rooms.json,
-  // moves, and quits.
-  // Absolute path: exec() runs /bin/sh with no env, so it lacks the
-  // /usr/local/bin that /etc/profile gives the interactive shell. The
-  // login_shell_finds_pokemud check below covers what a visitor actually types.
-  const mudT0 = Date.now();
+  // PokéMUD, the easter egg: a real i386 binary, so it only works if CheerpX
+  // can actually exec it. A -static build faults here before main() runs, and
+  // that is invisible until something runs the game in the guest.
+  //
+  // Absolute paths and an explicit HOME: exec() runs /bin/sh with no env, so it
+  // has neither the /usr/local/bin that /etc/profile gives the login shell nor
+  // the HOME the launcher writes its save under. Never wrap these in coreutils
+  // `timeout` — it segfaults under CheerpX and wedges the guest for good.
   const mudOut = await exec('printf "look\\nn\\nq\\n" | /usr/local/bin/pokemud');
-  log('pokemud_ms', Date.now() - mudT0);
   assert('pokemud_runs', mudOut.includes('Temple Of Mota'), mudOut.slice(0, 80));
-  assert('pokemud_accepts_input', mudOut.includes('By the Temple Altar'), mudOut.slice(-200));
+  assert('pokemud_takes_input', mudOut.includes('By the Temple Altar'), mudOut.slice(-160));
+  assert('pokemud_quits', mudOut.trimEnd().endsWith('Exiting game'), mudOut.slice(-60));
+
+  // EOF used to spin the input loop forever on the previous command, which in
+  // the terminal window is an unkillable Ctrl-D.
+  const mudEof = await exec('/usr/local/bin/pokemud < /dev/null');
+  assert('pokemud_survives_eof', mudEof.trimEnd().endsWith('Exiting game'), mudEof.slice(-60));
+
+  // The save has to land in scratch/, the one writable spot in the guest.
+  await exec('HOME=/home/user /usr/local/bin/pokemud < /dev/null');
   const mudDir = await list('/home/user/scratch/pokemud');
-  const teamEntry = mudDir.find((e) => e.name === 'team.json');
-  assert('pokemud_save_is_writable', teamEntry?.writable === true, mudDir);
-  // Absent from `help` on purpose — that is what makes it an easter egg.
-  // What a visitor actually types: bash --login, same as WebVmTerminal boots.
+  assert('pokemud_save_writable', mudDir.find((e) => e.name === 'team.json')?.writable === true, mudDir);
+
+  // What a visitor actually types, in the shell WebVmTerminal boots.
   const viaLogin = await exec('bash --login -c "command -v pokemud" 2>/dev/null');
-  assert('login_shell_finds_pokemud', viaLogin.trim().endsWith('/pokemud'), viaLogin);
-  // Absent from `help` on purpose — that is what makes it an easter egg.
+  assert('pokemud_on_login_path', viaLogin.trim().endsWith('/pokemud'), viaLogin);
+  // Absent from `help` on purpose — that is the whole point of an easter egg.
   assert('pokemud_stays_hidden', !(await exec('/usr/local/bin/help')).includes('pokemud'));
 
   // Concurrent callers must not interleave through the shared /out/rpc file.
