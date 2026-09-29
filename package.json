@@ -10,6 +10,7 @@
     "test:vm": "./scripts/vm-test/run.sh",
     "test:blog": "node scripts/blog-test/blogtest.ts",
     "test:session": "node scripts/session-test/sessiontest.ts",
+    "test:pages": "node scripts/pages/pagestest.ts",
     "proto:x11": "node scripts/x11-test/run.mjs",
     "shot": "node scripts/shot/shot.mjs"
   },

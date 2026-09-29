@@ -1,6 +1,8 @@
 import fs from 'node:fs';
 import { fileURLToPath } from 'node:url';
+import path from 'node:path';
 import { defineConfig, type Plugin } from 'vite';
+import { renderPages } from './scripts/pages/pages';
 
 const X11_DIR = fileURLToPath(new URL('./scripts/x11-test/', import.meta.url));
 const X11_HTML = `${X11_DIR}x11test.html`;
@@ -71,6 +73,25 @@ function x11Prototype(): Plugin {
   };
 }
 
+/** One real HTML file per route, plus sitemap.xml and robots.txt (scripts/pages/pages.ts). */
+function staticPages(): Plugin {
+  let outDir = '';
+  return {
+    name: 'static-pages',
+    apply: 'build',
+    configResolved(config) {
+      outDir = path.resolve(config.root, config.build.outDir);
+    },
+    closeBundle() {
+      const template = fs.readFileSync(path.join(outDir, 'index.html'), 'utf8');
+      for (const [file, html] of renderPages(template, process.cwd())) {
+        fs.mkdirSync(path.dirname(path.join(outDir, file)), { recursive: true });
+        fs.writeFileSync(path.join(outDir, file), html);
+      }
+    },
+  };
+}
+
 export default defineConfig({
-  plugins: [x11Prototype()],
+  plugins: [x11Prototype(), staticPages()],
 });

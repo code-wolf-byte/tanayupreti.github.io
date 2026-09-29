@@ -1,6 +1,7 @@
 import { WindowManager } from './WindowManager';
 import { Taskbar } from './Taskbar';
 import { ACCENT, Session, bus, type AppKind } from './session';
+import { intentFor, syncUrl } from './url';
 
 export class Desktop {
   private readonly desktopArea: HTMLElement;
@@ -43,7 +44,11 @@ export class Desktop {
     screen();
     new ResizeObserver(screen).observe(this.desktopArea);
 
+    // Read before boot: boot focuses the terminal, which rewrites the URL to /.
+    const opened = intentFor(location.pathname);
+    syncUrl();
     bus.intents.publish({ type: 'boot' });
+    if (opened) bus.intents.publish(opened);
   }
 
   /**

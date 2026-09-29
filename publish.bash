@@ -8,11 +8,10 @@ npm run build
 if [ $? -eq 0 ]; then
     echo "Build successful. Moving files..."
 
-    # Move contents of dist to the root directory
-    mv dist/* .
-
-    # Remove the now empty dst directory
-    rmdir dist
+    # Copy contents of dist to the root directory. Not mv: it refuses to
+    # replace a non-empty directory (projects/ from the last publish).
+    cp -r dist/. .
+    rm -rf dist
 
     echo "Files moved to the root directory successfully."
 else

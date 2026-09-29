@@ -8,6 +8,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="color-scheme" content="dark" />
   <title>Portfolio - Tanay Upreti</title>
+  <!-- The build puts each page's content in <main id="page"> (scripts/pages).
+       With JS the desktop shows it instead, so hide it visually — before first
+       paint, not after the bundle loads — but keep it for crawlers and screen readers. -->
+  <script>document.documentElement.classList.add('js')</script>
+  <style>
+    .js #page { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  </style>
   <script type="module" src="/src/main.ts"></script>
 </head>
 
