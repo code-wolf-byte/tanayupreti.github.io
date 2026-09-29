@@ -1,19 +1,7 @@
-import { parsePost } from '../blog/post';
-import { renderMarkdown } from '../blog/markdown';
+import { toProject, type Project } from '../blog/project';
 import type { WindowContent } from '../types';
 
 type Status = 'active' | 'shipped' | 'archived';
-
-interface Project {
-  name: string;
-  tagline: string;
-  link: string;
-  status: string;
-  year: string;
-  stack: string[];
-  /** The writeup, already rendered. Empty when the file has no body. */
-  writeup: string;
-}
 
 /**
  * One module per file in content/projects, the same files the VM image is
@@ -42,6 +30,14 @@ export class ProjectsWindow implements WindowContent {
   private projects: Project[] = [];
   private selected = 0;
   private destroyed = false;
+  private readonly initial?: string;
+  private readonly onSelect?: (slug: string) => void;
+
+  /** `initial`: the slug to show first (from /projects/<slug>/). */
+  constructor(initial?: string, onSelect?: (slug: string) => void) {
+    this.initial = initial;
+    this.onSelect = onSelect;
+  }
 
   mount(container: HTMLElement): void {
     this.container = container;
@@ -82,6 +78,7 @@ export class ProjectsWindow implements WindowContent {
       // would resurrect markup the user already dismissed.
       if (this.destroyed) return;
       this.projects = files.map((text, i) => toProject(text, paths[i]));
+      this.selected = Math.max(0, this.projects.findIndex((p) => p.slug === this.initial));
     } catch (err) {
       if (this.destroyed) return;
       // A malformed content file otherwise shows as an empty console, which
@@ -146,6 +143,7 @@ export class ProjectsWindow implements WindowContent {
   private select(i: number): void {
     if (i === this.selected) return;
     this.selected = i;
+    this.onSelect?.(this.projects[i].slug);
     this.markSelected();
     this.renderDetail();
   }
@@ -222,35 +220,6 @@ export class ProjectsWindow implements WindowContent {
     const open = this.detailEl.querySelector('.sdn-open') as HTMLAnchorElement;
     open.href = project.link;
   }
-}
-
-/**
- * The same [project] table the image build reads, checked here too: a window
- * that renders a blank card because a field was renamed is far harder to
- * diagnose than one that says which file and which field.
- */
-function toProject(source: string, filePath: string): Project {
-  const file = filePath.split('/').pop() ?? filePath;
-  const { meta, markdown } = parsePost(source);
-  const table = meta.project as Record<string, unknown> | undefined;
-
-  if (!table) throw new Error(`${file}: missing a [project] table`);
-  const text = (field: string): string => {
-    const value = table[field];
-    if (typeof value !== 'string') throw new Error(`${file}: [project] needs a "${field}" string`);
-    return value;
-  };
-  if (!Array.isArray(table.stack)) throw new Error(`${file}: [project] needs a "stack" array`);
-
-  return {
-    name: text('name'),
-    tagline: text('tagline'),
-    link: text('link'),
-    status: text('status'),
-    year: text('year'),
-    stack: table.stack.map(String),
-    writeup: markdown.trim() ? renderMarkdown(markdown) : '',
-  };
 }
 
 /** Anything unrecognised parks on `archived` rather than losing its LED. */

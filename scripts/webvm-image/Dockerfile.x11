@@ -1,0 +1,22 @@
+# X11 prototype: the smallest X desktop Alpine offers (Xorg + twm), for
+# scripts/x11-test. Not the site image — see Dockerfile for that.
+FROM alpine:3.19
+
+# modesetting (CheerpX's KMS device) is built into xorg-server; no video
+# driver package needed. mkfontscale is only here to reindex the pruned fonts.
+RUN apk add --no-cache xorg-server xf86-input-evdev twm xterm xclock xinit \
+      font-misc-misc mkfontscale \
+    && adduser -D -s /bin/sh user \
+    # Prune (measured ~8MB). Keep the 6x13 "fixed" face X refuses to start
+    # without, plus the cursor font; the rest are CJK and large bitmaps.
+    && find /usr/share/fonts/misc -name '*.pcf.gz' ! -name '6x13*' ! -name 'cursor*' -delete \
+    && mkfontdir /usr/share/fonts/misc \
+    && apk del mkfontscale \
+    && rm -rf /usr/share/hwdata /usr/lib/dri /usr/lib/xorg/modules/libglamoregl.so \
+      /usr/share/man /usr/share/doc \
+    # twm otherwise asks for a click to place every window without a position.
+    && echo 'RandomPlacement' >> /usr/share/X11/twm/system.twmrc
+
+COPY x11/xorg.conf /etc/X11/xorg.conf
+COPY x11/xinitrc /etc/X11/xinit/xinitrc
+RUN chmod +x /etc/X11/xinit/xinitrc

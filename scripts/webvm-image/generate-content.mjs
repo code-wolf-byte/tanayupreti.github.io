@@ -175,6 +175,19 @@ echo "\${LINES[RANDOM % \${#LINES[@]}]}" | fold -s -w "$cols"
 `
 );
 
+// open: the guest's way into the desktop. Resolves the path here and prints
+// it as a private OSC escape, which the terminal window turns into a window
+// (OSC_OPEN in src/webvm/WebVmTerminal.ts — keep the number in step).
+writeExecutable(
+  'usr/local/bin/open',
+  `#!/bin/sh
+[ $# -eq 1 ] || { echo "usage: open <file|dir>" >&2; exit 2; }
+[ -e "$1" ] || { echo "open: $1: No such file or directory" >&2; exit 1; }
+kind=file; [ -d "$1" ] && kind=dir
+printf '\\033]7777;%s;%s\\007' "$kind" "$(realpath -- "$1")"
+`
+);
+
 // help
 writeExecutable(
   'usr/local/bin/help',
@@ -186,6 +199,7 @@ cat <<'EOF'
   whoami      A perplexing question.
   repo        View the GitHub repository.
   banner      Display the banner.
+  open        Open a file or directory in a desktop window.
 
 This is a real Alpine Linux shell running via CheerpX/WebAssembly —
 standard commands (ls, cat, vi, ...) work too.

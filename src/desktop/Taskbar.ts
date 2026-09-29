@@ -1,5 +1,6 @@
 import { onVmStage, TOTAL_STAGES } from '../webvm/vm';
 import { vm } from '../webvm/vm';
+import { bus } from './session';
 import type { WindowId } from '../types';
 
 export interface LauncherApp {
@@ -18,8 +19,6 @@ export class Taskbar {
   private vmEl!: HTMLElement;
   private readonly buttons = new Map<WindowId, HTMLButtonElement>();
   private clockTimer: ReturnType<typeof setInterval> | null = null;
-
-  onButtonClick?: (id: WindowId) => void;
 
   constructor(apps: LauncherApp[]) {
     this.element = document.createElement('div');
@@ -44,6 +43,20 @@ export class Taskbar {
     this.buildMenu(apps);
     this.startClock();
     this.trackVm();
+
+    bus.instructions.subscribe((msg) => {
+      switch (msg.type) {
+        case 'create':
+          return this.addWindow(msg.id, msg.title, msg.accent);
+        case 'destroy':
+          return this.removeWindow(msg.id);
+        case 'focus':
+          return this.setFocused(msg.id);
+        case 'minimize':
+          return this.setMinimized(msg.id, msg.minimized);
+        // 'title' is ignored: buttons keep the base name, dirty marker is titlebar-only.
+      }
+    });
   }
 
   private buildMenu(apps: LauncherApp[]): void {
@@ -119,19 +132,17 @@ export class Taskbar {
     this.clockTimer = setInterval(tick, 1000);
   }
 
-  addWindow(id: WindowId, title: string, accent?: string): void {
+  private addWindow(id: WindowId, title: string, accent?: string): void {
     const btn = document.createElement('button');
     btn.className = 'taskbar-btn';
     if (accent) btn.style.setProperty('--accent', accent);
     btn.textContent = title;
-    btn.addEventListener('click', () => {
-      this.onButtonClick?.(id);
-    });
+    btn.addEventListener('click', () => bus.intents.publish({ type: 'activate', id }));
     this.buttons.set(id, btn);
     this.windowsEl.appendChild(btn);
   }
 
-  removeWindow(id: WindowId): void {
+  private removeWindow(id: WindowId): void {
     const btn = this.buttons.get(id);
     if (btn) {
       btn.remove();
@@ -139,13 +150,13 @@ export class Taskbar {
     }
   }
 
-  setFocused(id: WindowId | null): void {
+  private setFocused(id: WindowId | null): void {
     this.buttons.forEach((btn, btnId) => {
       btn.classList.toggle('active', btnId === id);
     });
   }
 
-  setMinimized(id: WindowId, isMinimized: boolean): void {
+  private setMinimized(id: WindowId, isMinimized: boolean): void {
     const btn = this.buttons.get(id);
     if (btn) btn.classList.toggle('minimized', isMinimized);
   }

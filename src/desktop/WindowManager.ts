@@ -1,131 +1,70 @@
 import { AppWindow } from '../windows/Window';
-import type { WindowContent, WindowId, WindowOptions } from '../types';
+import { VmWindow } from '../windows/VmWindow';
+import { FileBrowserWindow } from '../windows/FileBrowserWindow';
+import { EditorWindow } from '../windows/EditorWindow';
+import { ProjectsWindow } from '../windows/ProjectsWindow';
+import { bus, type Instruction } from './session';
+import { projectRoute, setRoute } from './url';
+import type { WindowContent, WindowId } from '../types';
 
-interface WindowRecord {
-  id: WindowId;
-  title: string;
-  instance: AppWindow;
-  isMinimized: boolean;
-  isMaximized: boolean;
+/**
+ * Draws what the session says and nothing else: every window change arrives
+ * as an instruction, and every click on a window goes back out as an intent.
+ */
+export class WindowManager {
+  private readonly windows = new Map<WindowId, AppWindow>();
+
+  constructor(private readonly desktopArea: HTMLElement) {
+    bus.instructions.subscribe((msg) => this.apply(msg));
+  }
+
+  private apply(msg: Instruction): void {
+    if (msg.type === 'create') {
+      const win = new AppWindow(msg.id, { title: msg.title, accent: msg.accent, ...msg.rect }, this.desktopArea);
+      win.onFocus = (id) => bus.intents.publish({ type: 'focus', id });
+      win.onClose = (id) => bus.intents.publish({ type: 'close', id });
+      win.onMinimize = (id) => bus.intents.publish({ type: 'minimize', id });
+      this.windows.set(msg.id, win);
+      win.mount(contentFor(msg));
+      return;
+    }
+
+    if (msg.type === 'focus') {
+      this.windows.forEach((win, id) => {
+        if (id !== msg.id) return win.blur();
+        win.focus();
+        win.setZIndex(msg.z);
+      });
+      return;
+    }
+
+    const win = this.windows.get(msg.id);
+    if (!win) return;
+    switch (msg.type) {
+      case 'minimize':
+        return msg.minimized ? win.minimize() : win.restore();
+      case 'title':
+        return win.setTitle(msg.title, msg.dirty);
+      case 'destroy':
+        win.destroy();
+        this.windows.delete(msg.id);
+        return;
+    }
+  }
 }
 
-export class WindowManager {
-  private readonly desktopArea: HTMLElement;
-  private readonly windows = new Map<WindowId, WindowRecord>();
-  private zCounter = 100;
-  private cascadeOffset = 0;
-  private idCounter = 0;
-
-  onWindowOpened?: (id: WindowId, title: string, accent?: string) => void;
-  onWindowClosed?: (id: WindowId) => void;
-  onWindowFocused?: (id: WindowId) => void;
-  onWindowMinimized?: (id: WindowId, isMinimized: boolean) => void;
-
-  constructor(desktopArea: HTMLElement) {
-    this.desktopArea = desktopArea;
-  }
-
-  open(content: WindowContent, options: WindowOptions): WindowId {
-    const id: WindowId = `win-${++this.idCounter}`;
-
-    const offset = this.cascadeOffset;
-    this.cascadeOffset = (this.cascadeOffset + 30) % 90;
-
-    const winOptions: WindowOptions = {
-      ...options,
-      x: (options.x ?? undefined) !== undefined ? options.x : undefined,
-      y: (options.y ?? undefined) !== undefined ? options.y : undefined,
-    };
-
-    // Apply cascade if no explicit position
-    if (winOptions.x === undefined) {
-      const areaW = this.desktopArea.clientWidth;
-      const areaH = this.desktopArea.clientHeight;
-      const w = options.width ?? 700;
-      const h = options.height ?? 450;
-      winOptions.x = Math.max(0, Math.min((areaW - w) / 2 + offset, areaW - w));
-      winOptions.y = Math.max(0, Math.min((areaH - h) / 2 + offset, areaH - h));
+function contentFor(msg: Extract<Instruction, { type: 'create' }>): WindowContent {
+  switch (msg.app) {
+    case 'terminal':
+      return new VmWindow();
+    case 'projects':
+      return new ProjectsWindow(msg.path, (slug) => setRoute(msg.id, projectRoute(slug)));
+    case 'files':
+      return new FileBrowserWindow(msg.path);
+    case 'editor': {
+      const editor = new EditorWindow(msg.path ?? '');
+      editor.onDirtyChange = (dirty) => bus.intents.publish({ type: 'dirty', id: msg.id, dirty });
+      return editor;
     }
-
-    const win = new AppWindow(id, winOptions, this.desktopArea);
-
-    win.onFocus = (wid) => this.focus(wid);
-    win.onClose = (wid) => this.close(wid);
-    win.onMinimize = (wid) => this.minimize(wid);
-
-    const record: WindowRecord = {
-      id,
-      title: options.title,
-      instance: win,
-      isMinimized: false,
-      isMaximized: false,
-    };
-
-    this.windows.set(id, record);
-    win.mount(content);
-    this.focus(id);
-
-    this.onWindowOpened?.(id, options.title, options.accent);
-    return id;
-  }
-
-  focus(id: WindowId): void {
-    const record = this.windows.get(id);
-    if (!record) return;
-
-    this.windows.forEach((rec) => rec.instance.blur());
-    record.instance.focus();
-    record.instance.setZIndex(++this.zCounter);
-
-    if (record.isMinimized) {
-      record.isMinimized = false;
-      record.instance.restore();
-      this.onWindowMinimized?.(id, false);
-    }
-
-    this.onWindowFocused?.(id);
-  }
-
-  close(id: WindowId): void {
-    const record = this.windows.get(id);
-    if (!record) return;
-    record.instance.destroy();
-    this.windows.delete(id);
-    this.onWindowClosed?.(id);
-    // Surface the most recent remaining window. On mobile only the focused one
-    // shows, so without this, closing the visible app leaves a blank screen.
-    const next = [...this.windows.keys()].pop();
-    if (next) this.focus(next);
-  }
-
-  minimize(id: WindowId): void {
-    const record = this.windows.get(id);
-    if (!record) return;
-    record.isMinimized = true;
-    record.instance.minimize();
-    this.onWindowMinimized?.(id, true);
-  }
-
-  restore(id: WindowId): void {
-    this.focus(id);
-  }
-
-  toggleMinimize(id: WindowId): void {
-    const record = this.windows.get(id);
-    if (!record) return;
-    if (record.isMinimized) {
-      this.restore(id);
-    } else {
-      this.minimize(id);
-    }
-  }
-
-  setTitle(id: WindowId, title: string, dirty = false): void {
-    // Titlebar only; the taskbar button keeps the base name, which is fine.
-    this.windows.get(id)?.instance.setTitle(title, dirty);
-  }
-
-  hasWindow(id: WindowId): boolean {
-    return this.windows.has(id);
   }
 }

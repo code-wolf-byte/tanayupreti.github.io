@@ -3,6 +3,7 @@ import { FitAddon } from '@xterm/addon-fit';
 import '@xterm/xterm/css/xterm.css';
 import { vm } from './vm';
 import { BootSequence } from './BootSequence';
+import { bus } from '../desktop/session';
 import type { WindowContent } from '../types';
 
 export class WebVmTerminal implements WindowContent {
@@ -54,6 +55,17 @@ export class WebVmTerminal implements WindowContent {
     // its real size after booting off-screen.
     this.resizeObserver = new ResizeObserver(() => this.applyFit());
     this.resizeObserver.observe(this.termEl);
+
+    // Guest -> desktop: `open <path>` in the shell prints OSC 7777;<file|dir>;<abspath>
+    // BEL (scripts/webvm-image/generate-content.mjs). The guest resolves the
+    // path and its type, so this never has to ask the VM anything back.
+    // Anything the guest prints can trigger it (`cat` of a crafted file too),
+    // which is fine: the worst case is a window onto a guest path.
+    this.term.parser.registerOscHandler(OSC_OPEN, (data) => {
+      const m = /^(file|dir);(\/.*)$/.exec(data);
+      if (m) bus.intents.publish({ type: 'launch', app: m[1] === 'dir' ? 'files' : 'editor', path: m[2] });
+      return true;
+    });
 
     const encoder = new TextEncoder();
     this.term.onData((data) => {
@@ -145,6 +157,9 @@ export class WebVmTerminal implements WindowContent {
     });
   }
 }
+
+/** Private-use OSC number; keep in step with the guest's `open` script. */
+const OSC_OPEN = 7777;
 
 /**
  * ANSI palette for the guest. Kept in sync by hand with the custom properties
