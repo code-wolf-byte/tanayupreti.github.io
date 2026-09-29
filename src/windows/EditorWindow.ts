@@ -1,8 +1,6 @@
 import { isWritable, readFile, writeFile } from '../webvm/vm';
 import type { WindowContent } from '../types';
 
-export const baseName = (path: string): string => path.split('/').filter(Boolean).pop() ?? path;
-
 export class EditorWindow implements WindowContent {
   private textarea!: HTMLTextAreaElement;
   private statusEl!: HTMLElement;

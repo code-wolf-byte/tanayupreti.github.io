@@ -1,5 +1,6 @@
 import { list } from '../webvm/vm';
 import type { DirEntry } from '../webvm/vm';
+import { bus } from '../desktop/session';
 import type { WindowContent } from '../types';
 
 /** '/a/b' -> '/a'; '/a' -> '/'; '/' -> '/' */
@@ -18,9 +19,6 @@ export class FileBrowserWindow implements WindowContent {
   private cwd: string;
   // Bumped on every navigation so a slow listing can't repaint over a newer one.
   private navToken = 0;
-
-  /** Set by the desktop to hand files off to an editor. */
-  onOpenFile?: (path: string) => void;
 
   constructor(private readonly startPath = '/home/user') {
     this.cwd = startPath;
@@ -119,7 +117,7 @@ export class FileBrowserWindow implements WindowContent {
 
     const open = () => {
       if (entry.isDir) void this.navigate(target);
-      else this.onOpenFile?.(target);
+      else bus.intents.publish({ type: 'launch', app: 'editor', path: target });
     };
     li.addEventListener('dblclick', open);
     li.addEventListener('keydown', (e) => {

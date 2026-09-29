@@ -9,6 +9,7 @@
     "preview": "vite preview",
     "test:vm": "./scripts/vm-test/run.sh",
     "test:blog": "node scripts/blog-test/blogtest.ts",
+    "test:session": "node scripts/session-test/sessiontest.ts",
     "shot": "node scripts/shot/shot.mjs"
   },
   "devDependencies": {

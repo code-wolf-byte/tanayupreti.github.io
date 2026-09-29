@@ -10,7 +10,7 @@ RUN apk add --no-cache bash coreutils less nano figlet libstdc++ \
 # (banner/about/projects/whoami) as real commands in the real shell.
 COPY rootfs-overlay/ /
 RUN chmod +x /usr/local/bin/banner /usr/local/bin/about /usr/local/bin/projects \
-      /usr/local/bin/repo /usr/local/bin/whoami /usr/local/bin/help \
+      /usr/local/bin/repo /usr/local/bin/whoami /usr/local/bin/help /usr/local/bin/open \
     # bash's `help` builtin shadows /usr/local/bin/help, so the banner's
     # "Type 'help'" would print bash's builtin index instead of the site's.
     && echo "enable -n help" >> /etc/profile \

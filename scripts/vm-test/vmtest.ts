@@ -2,7 +2,7 @@
 // Bundled with esbuild and driven by headless Chrome: ./scripts/vm-test/run.sh
 import { exec, list, readFile, writeFile, isWritable, quote } from '../../src/webvm/vm';
 import { parentOf, joinPath } from '../../src/windows/FileBrowserWindow';
-import { baseName } from '../../src/windows/EditorWindow';
+import { baseName } from '../../src/desktop/session';
 
 const results: Record<string, unknown> = {};
 const log = (k: string, v: unknown) => {
@@ -35,8 +35,16 @@ try {
   // list() against a directory whose contents we know from the image build.
   const bins = await list('/usr/local/bin');
   const names = bins.map((e) => e.name).sort();
-  assert('list_finds_portfolio_cmds', ['about', 'banner', 'help', 'projects', 'repo', 'whoami'].every((n) => names.includes(n)), names);
+  assert('list_finds_portfolio_cmds', ['about', 'banner', 'help', 'open', 'projects', 'repo', 'whoami'].every((n) => names.includes(n)), names);
   assert('list_files_not_dirs', bins.every((e) => !e.isDir), bins);
+
+  // `open` is the guest's side of the session bus: WebVmTerminal turns this
+  // exact escape into a window, so its bytes are the contract.
+  const opened = await exec('cd /home/user && /usr/local/bin/open about.txt && /usr/local/bin/open projects');
+  const want = '\x1b]7777;file;/home/user/about.txt\x07\x1b]7777;dir;/home/user/projects\x07';
+  assert('open_emits_osc', opened === want, opened);
+  const missing = await exec('/usr/local/bin/open /nope; echo "status=$?"');
+  assert('open_missing_fails', missing.includes('status=1'), missing);
 
   const root = await list('/');
   assert('list_marks_dirs', root.some((e) => e.name === 'etc' && e.isDir), root.filter((e) => e.name === 'etc'));
