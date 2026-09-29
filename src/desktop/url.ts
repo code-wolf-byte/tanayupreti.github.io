@@ -1,19 +1,23 @@
 // The address bar follows the focused window, so a copied link reopens what
 // was on screen. Routes match the static pages the build writes
-// (scripts/pages/pages.ts): /projects/ and /projects/<slug>/; everything else
-// is the plain desktop at /.
+// (scripts/pages/pages.ts): /projects/, /blog/ and a slug under each;
+// everything else is the plain desktop at /.
 //
 // replaceState, not pushState: switching windows isn't navigation, and Back
 // should leave the site rather than replay window focus.
-import { bus, type Intent } from './session';
+import { bus, type AppKind, type Intent } from './session';
 import type { WindowId } from '../types';
 
-export const projectRoute = (slug?: string): string => (slug ? `/projects/${slug}/` : '/projects/');
+/** Apps with pages of their own; the rest live at /. */
+const ROUTED: AppKind[] = ['projects', 'blog'];
+
+export const routeFor = (app: AppKind, slug?: string): string =>
+  !ROUTED.includes(app) ? '/' : slug ? `/${app}/${slug}/` : `/${app}/`;
 
 /** The window a URL asks for, or null for the plain desktop. */
 export function intentFor(pathname: string): Intent | null {
-  const m = /^\/projects(?:\/([\w-]+))?\/?$/.exec(pathname);
-  return m ? { type: 'launch', app: 'projects', path: m[1] } : null;
+  const m = /^\/(projects|blog)(?:\/([\w-]+))?\/?$/.exec(pathname);
+  return m ? { type: 'launch', app: m[1] as AppKind, path: m[2] } : null;
 }
 
 const routes = new Map<WindowId, string>();
@@ -33,7 +37,7 @@ export function syncUrl(): void {
   bus.instructions.subscribe((msg) => {
     switch (msg.type) {
       case 'create':
-        routes.set(msg.id, msg.app === 'projects' ? projectRoute(msg.path) : '/');
+        routes.set(msg.id, routeFor(msg.app, msg.path));
         return;
       case 'focus':
         focused = msg.id;

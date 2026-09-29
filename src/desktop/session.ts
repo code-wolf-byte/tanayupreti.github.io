@@ -10,7 +10,7 @@
 // No DOM in this file, so scripts/session-test can drive it from node.
 import type { WindowId } from '../types';
 
-export type AppKind = 'terminal' | 'files' | 'projects' | 'editor';
+export type AppKind = 'terminal' | 'files' | 'projects' | 'editor' | 'blog';
 
 export interface Rect {
   x: number;
@@ -21,7 +21,6 @@ export interface Rect {
 
 export type Intent =
   | { type: 'screen'; width: number; height: number; mobile: boolean }
-  | { type: 'boot' }
   | { type: 'launch'; app: AppKind; path?: string; rect?: Rect }
   | { type: 'focus' | 'close' | 'minimize' | 'activate'; id: WindowId }
   | { type: 'dirty'; id: WindowId; dirty: boolean };
@@ -82,20 +81,19 @@ export const ACCENT: Record<AppKind, string> = {
   files: 'var(--warn)',
   editor: 'var(--ok)',
   projects: 'var(--app-projects)',
+  blog: 'var(--app-blog)',
 };
 
 // Wide enough for the 90-column boot banner (~8.4px/char plus window chrome);
 // narrower and `banner` falls back to its compact form.
 const TERM_WIDTH = 860;
 
-/** Vertical space the desktop icon row needs (icon + bottom inset). */
-const ICON_ROW = 86;
-
 const DEFAULTS: Record<AppKind, { title: string; width: number; height: number }> = {
   terminal: { title: 'Terminal', width: TERM_WIDTH, height: 500 },
   files: { title: 'Files', width: 420, height: 420 },
   projects: { title: 'Projects', width: 660, height: 420 },
   editor: { title: 'Editor', width: 560, height: 420 },
+  blog: { title: 'Blog', width: 820, height: 560 },
 };
 
 export const baseName = (path: string): string => path.split('/').filter(Boolean).pop() ?? path;
@@ -130,8 +128,6 @@ export class Session {
       case 'screen':
         this.screen = { width: intent.width, height: intent.height, mobile: intent.mobile };
         return;
-      case 'boot':
-        return this.startupLayout();
       case 'launch':
         return this.launch(intent.app, intent.path, intent.rect);
       case 'focus':
@@ -159,24 +155,6 @@ export class Session {
         return;
       }
     }
-  }
-
-  /** Terminal and Files tiled side by side, so neither buries the other at boot. */
-  private startupLayout(): void {
-    // Mobile shows one window at a time, so a second one at boot would just
-    // bury the terminal. Files is a tap away in the Apps menu.
-    if (this.screen.mobile) return this.launch('terminal');
-
-    const gap = 12;
-    const { width: areaW, height: areaH } = this.screen;
-    // Leave the icon row uncovered. Trading height rather than width keeps the
-    // terminal at TERM_WIDTH, which the 90-column banner depends on.
-    const height = Math.min(520, areaH - 2 * gap - ICON_ROW);
-    const filesW = Math.min(340, Math.round(areaW * 0.3));
-    const termW = Math.min(TERM_WIDTH, areaW - filesW - 3 * gap);
-
-    this.launch('terminal', undefined, { x: gap, y: gap, width: termW, height });
-    this.launch('files', undefined, { x: gap + termW + gap, y: gap, width: filesW, height });
   }
 
   private launch(app: AppKind, path?: string, rect?: Rect): void {

@@ -2,6 +2,7 @@ import { WindowManager } from './WindowManager';
 import { Taskbar } from './Taskbar';
 import { ACCENT, Session, bus, type AppKind } from './session';
 import { intentFor, syncUrl } from './url';
+import { LockScreen } from './LockScreen';
 
 export class Desktop {
   private readonly desktopArea: HTMLElement;
@@ -23,6 +24,7 @@ export class Desktop {
       { label: 'Terminal', glyph: '▮', accent: ACCENT.terminal, run: launch('terminal') },
       { label: 'Files', glyph: '▤', accent: ACCENT.files, run: launch('files') },
       { label: 'Projects', glyph: '◈', accent: ACCENT.projects, run: launch('projects') },
+      { label: 'Blog', glyph: '¶', accent: ACCENT.blog, run: launch('blog') },
     ];
     const taskbar = new Taskbar(this.apps);
 
@@ -44,11 +46,13 @@ export class Desktop {
     screen();
     new ResizeObserver(screen).observe(this.desktopArea);
 
-    // Read before boot: boot focuses the terminal, which rewrites the URL to /.
-    const opened = intentFor(location.pathname);
+    // The desktop starts empty; only a deep link (/projects/...) opens a window.
     syncUrl();
-    bus.intents.publish({ type: 'boot' });
+    const opened = intentFor(location.pathname);
     if (opened) bus.intents.publish(opened);
+
+    // Last, over a desktop that is already booting: the VM loads while this is up.
+    new LockScreen(root, [this.desktopArea, taskbar.element]);
   }
 
   /**

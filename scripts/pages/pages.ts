@@ -12,8 +12,9 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { parsePost } from '../../src/blog/post.ts';
-import { renderMarkdown, escapeHtml } from '../../src/blog/markdown.ts';
-import { toProject, type Project } from '../../src/blog/project.ts';
+import { renderMarkdown, escapeHtml, summarize } from '../../src/blog/markdown.ts';
+import { byNewest, toProject, type Project } from '../../src/blog/project.ts';
+import { byDate, formatDate, toArticle, type Article } from '../../src/blog/article.ts';
 
 interface Page {
   /** Output path relative to dist/, e.g. `projects/web-server/index.html`. */
@@ -24,6 +25,8 @@ interface Page {
   body: string;
   /** schema.org data, so results can show who and what rather than guess. */
   jsonLd: Record<string, unknown>;
+  /** Open Graph type; posts are articles, everything else a website. */
+  ogType?: 'article';
 }
 
 /** Every file to write under dist/: the pages, plus sitemap.xml and robots.txt. */
@@ -39,7 +42,19 @@ export function renderPages(template: string, root: string): Map<string, string>
     .readdirSync(projectDir)
     .filter((f) => f.endsWith('.md'))
     .sort()
-    .map((f) => toProject(fs.readFileSync(path.join(projectDir, f), 'utf8'), f));
+    .map((f) => toProject(fs.readFileSync(path.join(projectDir, f), 'utf8'), f))
+    .sort(byNewest);
+
+  // Drafts never reach the built site. The folder can vanish too: git keeps no empty directories.
+  const blogDir = path.join(content, 'blog');
+  const posts = (fs.existsSync(blogDir) ? fs.readdirSync(blogDir) : [])
+    .filter((f) => f.endsWith('.md'))
+    .map((f) => toArticle(fs.readFileSync(path.join(blogDir, f), 'utf8'), f))
+    .filter((p) => !p.draft)
+    .sort(byDate);
+  const postList = `<ul>${posts
+    .map((p) => `<li><a href="/blog/${p.slug}/">${escapeHtml(p.title)}</a> — <time datetime="${p.date}">${formatDate(p.date)}</time></li>`)
+    .join('')}</ul>`;
 
   const projectList = `<ul>${projects
     .map((p) => `<li><a href="/projects/${p.slug}/">${escapeHtml(p.name)}</a> — ${escapeHtml(p.tagline)}</li>`)
@@ -63,8 +78,8 @@ export function renderPages(template: string, root: string): Map<string, string>
       file: 'index.html',
       route: '/',
       title: config.title,
-      description: summary(about),
-      body: `<h1>${escapeHtml(name)}</h1>${renderMarkdown(about)}<h2>Projects</h2>${projectList}<h2>Contact</h2>${contact}`,
+      description: summarize(about),
+      body: `<h1>${escapeHtml(name)}</h1>${renderMarkdown(about)}<h2>Projects</h2>${projectList}${posts.length ? `<h2>Blog</h2>${postList}` : ''}<h2>Contact</h2>${contact}`,
       jsonLd: person,
     },
     {
@@ -98,6 +113,41 @@ export function renderPages(template: string, root: string): Map<string, string>
         author: person,
       },
     })),
+    ...(posts.length
+      ? [
+          {
+            file: 'blog/index.html',
+            route: '/blog/',
+            title: `Blog - ${name}`,
+            description: `Writing by ${name}: ${posts.map((p) => p.title).join(', ')}.`,
+            body: `<h1>Blog</h1>${postList}<p><a href="/">${escapeHtml(name)}</a></p>`,
+            jsonLd: {
+              '@type': 'Blog',
+              name: `Blog - ${name}`,
+              url: `${origin}/blog/`,
+              author: person,
+              blogPost: posts.map((p) => ({ '@type': 'BlogPosting', headline: p.title, url: `${origin}/blog/${p.slug}/` })),
+            },
+          },
+        ]
+      : []),
+    ...posts.map((p) => ({
+      file: `blog/${p.slug}/index.html`,
+      route: `/blog/${p.slug}/`,
+      title: `${p.title} - ${name}`,
+      description: p.summary,
+      body: postBody(p, name),
+      ogType: 'article' as const,
+      jsonLd: {
+        '@type': 'BlogPosting',
+        headline: p.title,
+        description: p.summary,
+        datePublished: p.date,
+        keywords: p.tags,
+        url: `${origin}/blog/${p.slug}/`,
+        author: person,
+      },
+    })),
   ];
 
   const files = new Map(pages.map((page) => [page.file, fill(template, page, origin)]));
@@ -121,6 +171,15 @@ ${p.writeup}
 <p><a href="${escapeHtml(p.link)}">Repository</a> · <a href="/projects/">All projects</a> · <a href="/">${escapeHtml(name)}</a></p>`;
 }
 
+function postBody(p: Article, name: string): string {
+  return `<article>
+<h1>${escapeHtml(p.title)}</h1>
+<p><time datetime="${p.date}">${formatDate(p.date)}</time> · ${p.minutes} min read${p.tags.length ? ` · ${p.tags.map(escapeHtml).join(', ')}` : ''}</p>
+${p.html}
+</article>
+<p><a href="/blog/">All posts</a> · <a href="/">${escapeHtml(name)}</a></p>`;
+}
+
 function fill(template: string, page: Page, origin: string): string {
   const title = escapeHtml(page.title);
   const description = escapeHtml(page.description);
@@ -128,7 +187,7 @@ function fill(template: string, page: Page, origin: string): string {
   const head = `<title>${title}</title>
   <meta name="description" content="${description}" />
   <link rel="canonical" href="${url}" />
-  <meta property="og:type" content="website" />
+  <meta property="og:type" content="${page.ogType ?? 'website'}" />
   <meta property="og:title" content="${title}" />
   <meta property="og:description" content="${description}" />
   <meta property="og:url" content="${url}" />
@@ -146,10 +205,3 @@ function fill(template: string, page: Page, origin: string): string {
 /** `<` escaped so no content string can close the script element early. */
 const jsonLd = (data: Record<string, unknown>): string =>
   JSON.stringify({ '@context': 'https://schema.org', ...data }).replace(/</g, '\\u003c');
-
-/** First paragraph as plain text, cut to what a results page shows. */
-function summary(markdown: string): string {
-  const text = markdown.trim().split(/\n\s*\n/)[0].replace(/\s+/g, ' ');
-  if (text.length <= 155) return text;
-  return text.slice(0, 155).replace(/\s+\S*$/, '') + '…';
-}
