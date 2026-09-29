@@ -10,7 +10,7 @@
 // No DOM in this file, so scripts/session-test can drive it from node.
 import type { WindowId } from '../types';
 
-export type AppKind = 'terminal' | 'files' | 'projects' | 'editor';
+export type AppKind = 'terminal' | 'files' | 'projects' | 'editor' | 'blog';
 
 export interface Rect {
   x: number;
@@ -81,6 +81,7 @@ export const ACCENT: Record<AppKind, string> = {
   files: 'var(--warn)',
   editor: 'var(--ok)',
   projects: 'var(--app-projects)',
+  blog: 'var(--app-blog)',
 };
 
 // Wide enough for the 90-column boot banner (~8.4px/char plus window chrome);
@@ -92,6 +93,7 @@ const DEFAULTS: Record<AppKind, { title: string; width: number; height: number }
   files: { title: 'Files', width: 420, height: 420 },
   projects: { title: 'Projects', width: 660, height: 420 },
   editor: { title: 'Editor', width: 560, height: 420 },
+  blog: { title: 'Blog', width: 820, height: 560 },
 };
 
 export const baseName = (path: string): string => path.split('/').filter(Boolean).pop() ?? path;

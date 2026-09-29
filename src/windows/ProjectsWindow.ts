@@ -1,4 +1,4 @@
-import { toProject, type Project } from '../blog/project';
+import { byNewest, toProject, type Project } from '../blog/project';
 import type { WindowContent } from '../types';
 
 type Status = 'active' | 'shipped' | 'archived';
@@ -77,7 +77,7 @@ export class ProjectsWindow implements WindowContent {
       // The window can be closed mid-fetch; writing into a torn-down container
       // would resurrect markup the user already dismissed.
       if (this.destroyed) return;
-      this.projects = files.map((text, i) => toProject(text, paths[i]));
+      this.projects = files.map((text, i) => toProject(text, paths[i])).sort(byNewest);
       this.selected = Math.max(0, this.projects.findIndex((p) => p.slug === this.initial));
     } catch (err) {
       if (this.destroyed) return;
@@ -90,6 +90,11 @@ export class ProjectsWindow implements WindowContent {
 
     this.buildRoster();
     this.renderDetail();
+    // A deep link can select a unit far down the roster. Scroll only the roster
+    // (scrollIntoView would also scroll the desktop behind it).
+    const unit = this.rosterEl.children[this.selected].getBoundingClientRect();
+    const rail = this.rosterEl.getBoundingClientRect();
+    this.rosterEl.scrollBy(unit.left - rail.left - 6, unit.top - rail.top - 6);
 
     const active = this.projects.filter((p) => p.status === 'active').length;
     this.statusEl.textContent =

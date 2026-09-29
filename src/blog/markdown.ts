@@ -69,13 +69,16 @@ function emphasis(text: string): string {
   return (
     text
       // Images before links: both start with `[` once the `!` is consumed.
-      .replace(/!\[([^\]]*)\]\(([^)\s]+)(?:\s+"([^"]*)")?\)/g, (whole, alt, url, title) => {
+      // Titles are matched as &quot;…&quot;: the text was escaped before this
+      // runs, so a literal `"` never reaches here. Already escaped, the title
+      // goes straight into the attribute.
+      .replace(/!\[([^\]]*)\]\(([^)\s]+)(?:\s+&quot;(.*?)&quot;)?\)/g, (whole, alt, url, title) => {
         const href = safeUrl(url);
         if (!href) return whole;
         const titleAttr = title ? ` title="${title}"` : '';
         return `<img src="${href}" alt="${alt}"${titleAttr}>`;
       })
-      .replace(/\[([^\]]+)\]\(([^)\s]+)(?:\s+"([^"]*)")?\)/g, (whole, label, url, title) => {
+      .replace(/\[([^\]]+)\]\(([^)\s]+)(?:\s+&quot;(.*?)&quot;)?\)/g, (whole, label, url, title) => {
         const href = safeUrl(url);
         if (!href) return whole;
         const titleAttr = title ? ` title="${title}"` : '';
@@ -259,4 +262,24 @@ function renderItem(body: string[]): string {
   const [first, ...rest] = body;
   const nested = renderBlocks(rest);
   return `${renderInline(escapeHtml(first))}${nested ? `\n${nested}` : ''}`;
+}
+
+/**
+ * The first prose paragraph as plain text, cut to `max` characters: meta
+ * descriptions and list excerpts. Headings, lists, quotes and code are
+ * skipped, and link syntax keeps only its text.
+ */
+export function summarize(markdown: string, max = 155): string {
+  const para =
+    markdown
+      .trim()
+      .split(/\n\s*\n/)
+      .find((block) => !/^(#|```|[-*+] |> |\d+\. )/.test(block.trim())) ?? '';
+  const text = para
+    .replace(/!?\[([^\]]*)\]\([^)]*\)/g, '$1')
+    .replace(/\*\*|\*|`|~~/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+  if (text.length <= max) return text;
+  return text.slice(0, max).replace(/\s+\S*$/, '') + '…';
 }

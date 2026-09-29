@@ -3,8 +3,9 @@ import { VmWindow } from '../windows/VmWindow';
 import { FileBrowserWindow } from '../windows/FileBrowserWindow';
 import { EditorWindow } from '../windows/EditorWindow';
 import { ProjectsWindow } from '../windows/ProjectsWindow';
+import { BlogWindow } from '../windows/BlogWindow';
 import { bus, type Instruction } from './session';
-import { projectRoute, setRoute } from './url';
+import { routeFor, setRoute } from './url';
 import type { WindowContent, WindowId } from '../types';
 
 /**
@@ -58,7 +59,9 @@ function contentFor(msg: Extract<Instruction, { type: 'create' }>): WindowConten
     case 'terminal':
       return new VmWindow();
     case 'projects':
-      return new ProjectsWindow(msg.path, (slug) => setRoute(msg.id, projectRoute(slug)));
+      return new ProjectsWindow(msg.path, (slug) => setRoute(msg.id, routeFor('projects', slug)));
+    case 'blog':
+      return new BlogWindow(msg.path, (slug) => setRoute(msg.id, routeFor('blog', slug)));
     case 'files':
       return new FileBrowserWindow(msg.path);
     case 'editor': {

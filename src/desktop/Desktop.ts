@@ -24,6 +24,7 @@ export class Desktop {
       { label: 'Terminal', glyph: '▮', accent: ACCENT.terminal, run: launch('terminal') },
       { label: 'Files', glyph: '▤', accent: ACCENT.files, run: launch('files') },
       { label: 'Projects', glyph: '◈', accent: ACCENT.projects, run: launch('projects') },
+      { label: 'Blog', glyph: '¶', accent: ACCENT.blog, run: launch('blog') },
     ];
     const taskbar = new Taskbar(this.apps);
 

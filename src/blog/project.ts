@@ -16,6 +16,10 @@ export interface Project {
   writeup: string;
 }
 
+/** Roster order everywhere: newest first, then by name. */
+export const byNewest = (a: Project, b: Project): number =>
+  b.year.localeCompare(a.year) || a.name.localeCompare(b.name);
+
 /**
  * The same [project] table the image build reads, checked here too: a window
  * that renders a blank card because a field was renamed is far harder to

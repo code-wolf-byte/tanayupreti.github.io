@@ -171,6 +171,8 @@ test('links render, titles included', () => {
   assert.equal(renderMarkdown('[x](https://a.test)'), '<p><a href="https://a.test">x</a></p>');
   assert.equal(renderMarkdown('[x](/rel)'), '<p><a href="/rel">x</a></p>');
   assert.equal(renderMarkdown('![alt](/i.png)'), '<p><img src="/i.png" alt="alt"></p>');
+  assert.equal(renderMarkdown('![alt](/i.png "Cap")'), '<p><img src="/i.png" alt="alt" title="Cap"></p>');
+  assert.equal(renderMarkdown('[x](/rel "Tip")'), '<p><a href="/rel" title="Tip">x</a></p>');
 });
 
 // ---- the part that must not be simplified away -----------------------------
@@ -179,6 +181,9 @@ test('post text can never become markup', () => {
   assert.equal(renderMarkdown('<script>alert(1)</script>'), '<p>&lt;script&gt;alert(1)&lt;/script&gt;</p>');
   assert.equal(renderMarkdown('<img src=x onerror=alert(1)>'), '<p>&lt;img src=x onerror=alert(1)&gt;</p>');
   assert.ok(!renderMarkdown('# <b>hi</b>').includes('<b>'));
+  // A title can't close its attribute and add one of its own: the attempt stays
+  // inside title="…" as inert &quot; text, since a real attribute needs a bare quote.
+  assert.ok(!/onerror="/.test(renderMarkdown('![a](/i.png "x" onerror="alert(1)")')));
 });
 
 test('javascript: and data: links do not become hrefs', () => {
