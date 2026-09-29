@@ -1,0 +1,17 @@
+<!doctype html>
+<meta charset="utf-8" />
+<title>X11 prototype</title>
+<style>
+  body { margin: 0; background: #0b0a0f; color: #e6e3ec; font: 13px/1.4 monospace; }
+  #status { padding: 8px 12px; border-bottom: 1px solid #333; }
+  #wrap { display: flex; gap: 12px; padding: 12px; align-items: flex-start; }
+  /* cursor: none — X draws its own pointer into the framebuffer. */
+  #display { width: 1024px; height: 768px; background: #000; cursor: none; flex: none; }
+  #console { flex: 1; height: 768px; margin: 0; overflow: auto; white-space: pre-wrap; color: #8b8796; }
+</style>
+<div id="status">booting…</div>
+<div id="wrap">
+  <canvas id="display" tabindex="0"></canvas>
+  <pre id="console"></pre>
+</div>
+<script type="module" src="/scripts/x11-test/x11test.ts"></script>

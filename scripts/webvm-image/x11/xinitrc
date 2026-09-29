@@ -1,0 +1,5 @@
+#!/bin/sh
+# One terminal and a clock under twm. xterm last and exec'd: closing it ends the session.
+twm &
+xclock -geometry 120x120-16+16 &
+exec xterm -geometry 90x30+40+40 -title terminal

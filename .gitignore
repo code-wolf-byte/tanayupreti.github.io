@@ -37,3 +37,6 @@ shots/
 scripts/webvm-image/pokemud/*.cpp
 scripts/webvm-image/pokemud/*.h
 scripts/webvm-image/pokemud/pokemud/
+
+# X11 prototype image: ./scripts/webvm-image/build.sh x11 (~46MB, never shipped)
+scripts/x11-test/alpine-x11.ext2

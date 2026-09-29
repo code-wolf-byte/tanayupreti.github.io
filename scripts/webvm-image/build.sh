@@ -1,16 +1,29 @@
 #!/usr/bin/env bash
 # Builds a minimal Alpine (i386) ext2 disk image for the CheerpX-powered VM window.
 # Re-run this whenever Dockerfile changes to regenerate public/webvm/alpine.ext2.
+#
+#   ./build.sh       the site image  (Dockerfile     -> public/webvm/alpine.ext2)
+#   ./build.sh x11   X11 prototype   (Dockerfile.x11 -> scripts/x11-test/alpine-x11.ext2)
+#
+# The prototype stays out of public/ so it never ships with the site.
 set -euo pipefail
+
+VARIANT=${1:-}
 
 cd "$(dirname "$0")"
 
 node generate-content.mjs
 
-IMAGE_NAME=webvm-alpine-build
-CONTAINER_NAME=webvm-alpine-export
-OUT_DIR="../../public/webvm"
-OUT_FILE="$OUT_DIR/alpine.ext2"
+IMAGE_NAME=webvm-alpine-build${VARIANT:+-$VARIANT}
+CONTAINER_NAME=webvm-alpine-export${VARIANT:+-$VARIANT}
+DOCKERFILE=Dockerfile${VARIANT:+.$VARIANT}
+if [ "$VARIANT" = x11 ]; then
+  OUT_DIR="../x11-test"
+  OUT_FILE="$OUT_DIR/alpine-x11.ext2"
+else
+  OUT_DIR="../../public/webvm"
+  OUT_FILE="$OUT_DIR/alpine.ext2"
+fi
 
 ROOTFS_DIR=$(mktemp -d)
 TAR_FILE=$(mktemp)
@@ -26,7 +39,7 @@ trap cleanup EXIT
 
 command -v fakeroot >/dev/null || { echo "fakeroot is required (file ownership is lost without it)."; exit 1; }
 
-docker build --platform linux/i386 -t "$IMAGE_NAME" -f Dockerfile .
+docker build --platform linux/i386 -t "$IMAGE_NAME" -f "$DOCKERFILE" .
 docker create --platform linux/i386 --name "$CONTAINER_NAME" "$IMAGE_NAME" >/dev/null
 docker export "$CONTAINER_NAME" -o "$TAR_FILE"
 
