@@ -1,5 +1,3 @@
-import { onVmStage, TOTAL_STAGES } from '../webvm/vm';
-import { vm } from '../webvm/vm';
 import { bus } from './session';
 import type { WindowId } from '../types';
 
@@ -16,7 +14,6 @@ export class Taskbar {
   private readonly clockEl: HTMLElement;
   private readonly menuEl: HTMLElement;
   private readonly appsBtn: HTMLButtonElement;
-  private vmEl!: HTMLElement;
   private readonly buttons = new Map<WindowId, HTMLButtonElement>();
   private clockTimer: ReturnType<typeof setInterval> | null = null;
 
@@ -28,9 +25,6 @@ export class Taskbar {
       <div id="taskbar-menu" hidden></div>
       <div id="taskbar-windows"></div>
       <div id="taskbar-tray">
-        <span id="taskbar-vm" class="is-booting">
-          <i class="tray-led"></i><span class="tray-text">booting</span>
-        </span>
         <span id="taskbar-clock"></span>
       </div>
     `;
@@ -39,10 +33,8 @@ export class Taskbar {
     this.menuEl = this.element.querySelector('#taskbar-menu') as HTMLElement;
     this.appsBtn = this.element.querySelector('#taskbar-apps') as HTMLButtonElement;
 
-    this.vmEl = this.element.querySelector('#taskbar-vm') as HTMLElement;
     this.buildMenu(apps);
     this.startClock();
-    this.trackVm();
 
     bus.instructions.subscribe((msg) => {
       switch (msg.type) {
@@ -96,28 +88,6 @@ export class Taskbar {
   private closeMenu(): void {
     this.menuEl.hidden = true;
     this.appsBtn.classList.remove('active');
-  }
-
-  /**
-   * Live VM state in the tray, driven by the same stage reports the boot
-   * screen uses — so the claim in the terminal's banner has a running
-   * indicator backing it up rather than being a one-off splash.
-   */
-  private trackVm(): void {
-    const text = this.vmEl.querySelector('.tray-text') as HTMLElement;
-    onVmStage((stage) => {
-      text.textContent = `booting ${stage.step}/${TOTAL_STAGES}`;
-    });
-    vm().then(
-      () => {
-        this.vmEl.classList.replace('is-booting', 'is-up');
-        text.textContent = 'linux up';
-      },
-      () => {
-        this.vmEl.classList.replace('is-booting', 'is-down');
-        text.textContent = 'vm failed';
-      }
-    );
   }
 
   private startClock(): void {

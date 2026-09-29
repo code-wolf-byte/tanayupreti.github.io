@@ -1,0 +1,113 @@
+/* Lock screen (src/desktop/LockScreen.ts). Frosted over the live desktop, so
+   the terminal booting behind it shows through as shapes, not pixels. */
+#lock {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: grid;
+  grid-template-rows: 1fr auto 1fr;
+  justify-items: center;
+  padding: 24px 16px;
+  cursor: pointer;
+  background:
+    radial-gradient(90% 60% at 50% 110%, color-mix(in srgb, var(--accent) 22%, transparent) 0%, transparent 70%),
+    color-mix(in srgb, var(--bg) 72%, transparent);
+  backdrop-filter: blur(18px) saturate(1.2);
+  transition: transform 0.45s cubic-bezier(0.7, 0, 0.3, 1), opacity 0.45s ease;
+}
+
+#lock.is-leaving {
+  transform: translateY(-100%);
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.lock-clock {
+  align-self: end;
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+.lock-time {
+  font-size: clamp(64px, 14vw, 128px);
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  font-variant-numeric: tabular-nums;
+}
+
+.lock-date {
+  margin-top: 12px;
+  color: var(--text-dim);
+  letter-spacing: 0.04em;
+}
+
+.lock-user {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.lock-avatar {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 25%, transparent);
+  object-fit: contain;
+  padding: 10px;
+}
+
+.lock-name {
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.lock-signin {
+  font: inherit;
+  color: var(--bg);
+  background: var(--accent);
+  border: 0;
+  padding: 8px 20px;
+  cursor: pointer;
+  transition: filter 0.15s;
+}
+
+.lock-signin:hover {
+  filter: brightness(1.1);
+}
+
+.lock-signin:focus-visible {
+  outline-offset: 3px;
+}
+
+.lock-hint {
+  font-size: 12px;
+  color: var(--text-dim);
+  animation: lock-breathe 2.4s ease-in-out infinite;
+}
+
+@keyframes lock-breathe {
+  50% { opacity: 0.35; }
+}
+
+.lock-spinner {
+  width: 28px;
+  height: 28px;
+  margin-top: 4px;
+  border: 2px solid var(--line);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: lock-spin 0.8s linear infinite;
+}
+
+@keyframes lock-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Signed in, waiting on the VM: the spinner takes the button's place. */
+#lock.is-signing-in { cursor: progress; }
+#lock.is-signing-in .lock-signin,
+#lock.is-signing-in .lock-hint { display: none; }

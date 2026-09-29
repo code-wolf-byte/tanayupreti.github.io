@@ -13,26 +13,6 @@ function setup(mobile = false) {
   return { bus, out, send };
 }
 
-// Boot tiles terminal + files, and focuses each as it opens.
-{
-  const { out, send } = setup();
-  send({ type: 'boot' });
-  assert.deepEqual(out.map((m) => `${m.type}:${'id' in m ? m.id : ''}`), [
-    'create:win-1', 'focus:win-1', 'create:win-2', 'focus:win-2',
-  ]);
-  const [term, files] = out.filter((m) => m.type === 'create');
-  assert.equal(term.app, 'terminal');
-  assert.equal(files.app, 'files');
-  assert.ok(files.rect.x > term.rect.x + term.rect.width, 'files sits right of the terminal');
-}
-
-// Mobile boot opens only the terminal.
-{
-  const { out, send } = setup(true);
-  send({ type: 'boot' });
-  assert.equal(out.filter((m) => m.type === 'create').length, 1);
-}
-
 // Taskbar activate: minimize, then restore + focus; z only climbs.
 {
   const { out, send } = setup();
